@@ -44,8 +44,16 @@ export async function getForSaleData() {
     }
   };
 
+  try {
     const response = await axios.request(options);
-  return response?.data?.hits
+    console.log(response.data);
+    return response?.data?.hits
+  } catch (error) {
+    console.error(error);
+  }
+
+
+
 }
 
 
@@ -61,8 +69,14 @@ export async function getPropertyDetails(id) {
       'X-RapidAPI-Host': 'bayut.p.rapidapi.com'
     }
   };
-  const response = await axios.request(options);
-  return response?.data
+  try {
+    const response = await axios.request(options);
+    console.log(response.data);
+    return response?.data?.hits
+  } catch (error) {
+    console.error(error);
+  }
+
 }
 
 
