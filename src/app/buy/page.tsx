@@ -1,5 +1,4 @@
 import SingleProperty from "@/components/Buy/SingleProperty";
-import buyData from "@/components/Buy/buyData";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { getForRentData } from "utils/dataFetch";
 import { getForSaleData } from "utils/dataFetch";
