@@ -25,7 +25,8 @@ const PropertyDetailsPage = async ({ params } : {
 }) => {
   const { id } = params
   const data = await getPropertyDetails(id)
-  const {price, rentFrequency, rooms, completionStatus, referenceNumber, contactName,phoneNumber, state, product, title, baths, area, agency, isVerified, coverPhoto, description, type, purpose, furnishingStatus, amenities, photos} = data
+  const {price, rentFrequency, rooms, completionStatus, referenceNumber, contactName,phoneNumber, state, product, title, baths, area, agency, isVerified, coverPhoto, description, type, purpose, amenities, photos} = data
+  const safeArea = Number(area) || 0;
   return (
     <>
       <section className="overflow-hidden pb-[120px] pt-[150px]">
@@ -73,7 +74,7 @@ const PropertyDetailsPage = async ({ params } : {
                         <span className="mr-3">
                         <BsGrid1X2Fill size={"1.5rem"} color="#075970"/>
                         </span>
-                        {millify(area)} sqft
+                        {millify(safeArea)} sqft
                       </p>
                     </div>
                   </div>
@@ -333,7 +334,7 @@ const PropertyDetailsPage = async ({ params } : {
                 <div className="flex flex-wrap justify-center items-center px-8 py-6">
                   {amenities?.map((item) => (
                     item?.amenities?.map((amenity) => (
-                      <TagButton text={amenity?.text} />
+                      <TagButton text={amenity?.text} key={amenity}/>
                     ))
                   ))}
                 </div>
