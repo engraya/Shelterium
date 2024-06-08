@@ -72,7 +72,7 @@ export async function getPropertyDetails(id) {
   try {
     const response = await axios.request(options);
     console.log(response.data);
-    return response?.data?.hits
+    return response?.data
   } catch (error) {
     console.error(error);
   }

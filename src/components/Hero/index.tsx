@@ -13,9 +13,9 @@ const Hero = () => {
             <div className="w-full px-4">
               <div className="mx-auto max-w-[800px] text-center">
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-slate-200 sm:text-5xl md:text-6xl">
-                <span className="block xl:inline"><span className="mb-1 block">Explore</span>
+                <span className="block xl:inline"><span className="mb-1 block font-extrabold">Explore,</span>
                   <span className="bg-gradient-to-r from-indigo-400 to-pink-600 bg-clip-text text-transparent">
-                  Buy, Rent, and Sell Properties with Ease
+                  Buy, Rent, and Sell Properties with ease
                   </span>
                 </span>
                 <div className="mt-2">seamlessly { " "}
@@ -32,13 +32,14 @@ const Hero = () => {
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                   <Link
-                    href="#"
+                    href="/rent"
                     className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg"
                   >
                     🔥 Explore
                   </Link>
                   <Link
-                    href="#"
+                    href="https://github.com/engraya/Shelterium"
+                    target="_blank"
                     className="flex justify-center items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg"
                   >
                     <BsGithub /> Star on GitHub

@@ -20,7 +20,7 @@ const Blog = async () => {
     <>
       <Breadcrumb
         pageName="Buy Page"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius eros eget sapien consectetur ultrices. Ut quis dapibus libero."
+        description="This Page Showcases Properties available for Buying"
       />
       <section className="pb-[120px] pt-[80px]">
         <div className="container">

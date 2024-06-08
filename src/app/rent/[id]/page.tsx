@@ -1,7 +1,4 @@
-import RelatedPost from "@/components/Buy/RelatedPost";
-import SharePost from "@/components/Buy/SharePost";
 import TagButton from "@/components/Buy/TagButton";
-import NewsLatterBox from "@/components/Contact/NewsLatterBox";
 import Image from "next/image";
 import { getPropertyDetails } from "utils/dataFetch";
 import { Metadata } from "next";
@@ -11,10 +8,13 @@ import { FaBath } from "react-icons/fa";
 import { BsGrid1X2Fill } from "react-icons/bs";
 import { MdVerified } from "react-icons/md";
 import millify from "millify";
+import PropertyContactBox from "@/components/PropertyContactBox/PropertyContactBox";
+import { FaArrowLeft } from "react-icons/fa";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Blog Details Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Blog Details Page for Startup Nextjs Template",
+  title: "Property Details Page",
+  description: "This is the Details Page for a Property",
   // other metadata
 };
 
@@ -25,11 +25,17 @@ const PropertyDetailsPage = async ({ params } : {
 }) => {
   const { id } = params
   const data = await getPropertyDetails(id)
-  const {price, rentFrequency, rooms, title, baths, area, agency, isVerified, description, type, purpose, furnishingStatus, amenities, photos} = data
+  const {price, rentFrequency, rooms, completionStatus, referenceNumber, contactName,phoneNumber, state, product, title, baths, area, agency, isVerified, coverPhoto, description, type, purpose, furnishingStatus, amenities, photos} = data
   return (
     <>
-      <section className="overflow-hidden pb-[120px] pt-[180px]">
+      <section className="overflow-hidden pb-[120px] pt-[150px]">
         <div className="container">
+          <Link href="/rent">
+          <button type="button" className="flex justify-center items-center gap-x-2 text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-3 py-2 text-center me-2 mb-2">
+        <FaArrowLeft />
+          Back
+          </button>
+          </Link>
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4 lg:w-8/12">
               <div>
@@ -83,46 +89,22 @@ const PropertyDetailsPage = async ({ params } : {
                 </div>
                 <div>
                   <div className="mb-10 w-full overflow-hidden rounded">
-                    <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
-                      <Image
-                        src="/images/blog/blog-details-01.jpg"
-                        alt="image"
-                        fill
-                        className="h-full w-full object-cover object-center"
-                      />
+                    <div className="grid gap-4">
+                      <div>
+                        <Image className="h-auto w-full rounded-lg" src={coverPhoto?.url} height={500} width={500} alt="coverPhoto" />
+                      </div>
+                      <div className="grid grid-cols-5 gap-2">
+                        {photos?.map((photo) => (
+                          <div key={photo?.id}>
+                          <Image className="h-auto max-w-full rounded-lg" src={photo?.url} width={300} height={300} alt="property-photo" />
+                        </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <p className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    {description}
-                  </p>
-                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
-                    Digital marketplace for Ui/Ux designers.
-                  </h3>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    consectetur adipiscing elit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                    mattis vulputate cupidatat.
-                  </p>
-                  <ul className="mb-10 list-inside list-disc text-body-color">
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Consectetur adipiscing elit in voluptate velit.
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Mattis vulputate cupidatat.
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Vulputate enim nulla aliquet porttitor odio pellentesque
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Ligula ullamcorper malesuada proin
-                    </li>
-                  </ul>
                   <div className="relative z-10 mb-10 overflow-hidden rounded-md bg-primary bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">
                     <p className="text-center text-base font-medium italic text-body-color">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod incididunt utionals labore et dolore magna
-                      aliqua. Quis lobortis scelerisque fermentum, The Neque ut
-                      etiam sit amet.
+                      {description}
                     </p>
                     <span className="absolute left-0 top-0 z-[-1]">
                       <svg
@@ -265,28 +247,21 @@ const PropertyDetailsPage = async ({ params } : {
                       </svg>
                     </span>
                   </div>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    consectetur adipiscing elit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                    mattis vulputate cupidatat.
-                  </p>
                   <div className="items-center justify-between sm:flex">
                     <div className="mb-5">
                       <h4 className="mb-3 text-sm font-medium text-body-color">
-                        Amenities :
+                        Agency
                       </h4>
                       <div className="flex items-center">
-                        <TagButton text="Design" />
-                        <TagButton text="Development" />
-                        <TagButton text="Info" />
+                        <TagButton text={agency?.name} />
                       </div>
                     </div>
                     <div className="mb-5">
                       <h5 className="mb-3 text-sm font-medium text-body-color sm:text-right">
-                        Share this post :
+                        Reference Number :
                       </h5>
                       <div className="flex items-center sm:justify-end">
-                        <SharePost />
+                      <TagButton text={referenceNumber} />
                       </div>
                     </div>
                   </div>
@@ -294,95 +269,77 @@ const PropertyDetailsPage = async ({ params } : {
               </div>
             </div>
             <div className="w-full px-4 lg:w-4/12">
-              <div className="shadow-three dark:bg-gray-dark mb-10 mt-12 rounded-sm bg-white p-6 dark:shadow-none lg:mt-0">
-                <div className="flex items-center justify-between">
-                  <input
-                    type="text"
-                    placeholder="Search here..."
-                    className="border-stroke dark:text-body-color-dark dark:shadow-two mr-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                  <button
-                    aria-label="search button"
-                    className="flex h-[50px] w-full max-w-[50px] items-center justify-center rounded-sm bg-primary text-white"
-                  >
-                    <svg
-                      width="20"
-                      height="18"
-                      viewBox="0 0 20 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M19.4062 16.8125L13.9375 12.375C14.9375 11.0625 15.5 9.46875 15.5 7.78125C15.5 5.75 14.7188 3.875 13.2812 2.4375C10.3438 -0.5 5.5625 -0.5 2.59375 2.4375C1.1875 3.84375 0.40625 5.75 0.40625 7.75C0.40625 9.78125 1.1875 11.6562 2.625 13.0937C4.09375 14.5625 6.03125 15.3125 7.96875 15.3125C9.875 15.3125 11.75 14.5938 13.2188 13.1875L18.75 17.6562C18.8438 17.75 18.9688 17.7812 19.0938 17.7812C19.25 17.7812 19.4062 17.7188 19.5312 17.5938C19.6875 17.3438 19.6562 17 19.4062 16.8125ZM3.375 12.3438C2.15625 11.125 1.5 9.5 1.5 7.75C1.5 6 2.15625 4.40625 3.40625 3.1875C4.65625 1.9375 6.3125 1.3125 7.96875 1.3125C9.625 1.3125 11.2812 1.9375 12.5312 3.1875C13.75 4.40625 14.4375 6.03125 14.4375 7.75C14.4375 9.46875 13.7188 11.125 12.5 12.3438C10 14.8438 5.90625 14.8438 3.375 12.3438Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
-                <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
-                  Popular Category
+                <h3 className="border-b text-center border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
+                  More About Property
                 </h3>
                 <ul className="px-8 py-6">
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Tailwind Templates
-                    </a>
+                  <li className="flex flex-col mb-4">
+                  <div className="flex justify-between items-center">
+                  <div className="text-base font-medium text-body-color hover:text-primary">
+                    Type
+                  </div>
+                  <div>
+                    {type}
+                  </div>
+                </div>
                   </li>
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Landing page
-                    </a>
+                  <li className="flex flex-col mb-4">
+                  <div className="flex justify-between items-center">
+                  <div className="text-base font-medium text-body-color hover:text-primary">
+                    Purpose
+                  </div>
+                  <div>
+                    {purpose}
+                  </div>
+                </div>
                   </li>
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Startup
-                    </a>
+                  <li className="flex flex-col mb-4">
+                  <div className="flex justify-between items-center">
+                  <div className="text-base font-medium text-body-color hover:text-primary">
+                    State
+                  </div>
+                  <div>
+                    {state}
+                  </div>
+                </div>
                   </li>
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Business
-                    </a>
+                  <li className="flex flex-col mb-4">
+                  <div className="flex justify-between items-center">
+                  <div className="text-base font-medium text-body-color hover:text-primary">
+                    Product
+                  </div>
+                  <div>
+                    {product}
+                  </div>
+                </div>
                   </li>
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Multipurpose
-                    </a>
+                  <li className="flex flex-col mb-4">
+                  <div className="flex justify-between items-center">
+                  <div className="text-base font-medium text-body-color hover:text-primary">
+                    Completion Status
+                  </div>
+                  <div>
+                    {completionStatus}
+                  </div>
+                </div>
                   </li>
                 </ul>
               </div>
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
-                <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
+                <h3 className="border-b text-center border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
                   Amenities
                 </h3>
-                <div className="flex flex-wrap px-8 py-6">
-                  {/* {amenities?.map((item) => (
-                    item.amenities.map((amenity) => (
-                      <TagButton text="Themes" />
+                <div className="flex flex-wrap justify-center items-center px-8 py-6">
+                  {amenities?.map((item) => (
+                    item?.amenities?.map((amenity) => (
+                      <TagButton text={amenity?.text} />
                     ))
-                  
-                  ))} */}
-           
+                  ))}
                 </div>
               </div>
 
-              <NewsLatterBox />
+              <PropertyContactBox contactName={contactName} phoneNumber={phoneNumber}/>
             </div>
           </div>
         </div>

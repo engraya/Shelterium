@@ -19,12 +19,12 @@ const menuData: Menu[] = [
     path: "/buy",
     newTab: false,
   },
-  {
-    id: 4,
-    title: "Search",
-    path: "/search",
-    newTab: false,
-  },
+  // {
+  //   id: 4,
+  //   title: "Search",
+  //   path: "/search",
+  //   newTab: false,
+  // },
   {
     id: 5,
     title: "Rent",
@@ -33,52 +33,52 @@ const menuData: Menu[] = [
   },
   {
     id: 6,
-    title: "Support",
+    title: "Contact",
     path: "/contact",
     newTab: false,
   },
-  {
-    id: 7,
-    title: "Pages",
-    newTab: false,
-    submenu: [
-      {
-        id: 41,
-        title: "About Page",
-        path: "/about",
-        newTab: false,
-      },
-      {
-        id: 42,
-        title: "Contact Page",
-        path: "/contact",
-        newTab: false,
-      },
-      {
-        id: 43,
-        title: "Blog Grid Page",
-        path: "/buy",
-        newTab: false,
-      },
-      {
-        id: 44,
-        title: "Blog Sidebar Page",
-        path: "/blog-sidebar",
-        newTab: false,
-      },
-      {
-        id: 45,
-        title: "Blog Details Page",
-        path: "/blog-details",
-        newTab: false,
-      },
-      {
-        id: 48,
-        title: "Error Page",
-        path: "/error",
-        newTab: false,
-      },
-    ],
-  },
+  // {
+  //   id: 7,
+  //   title: "Pages",
+  //   newTab: false,
+  //   submenu: [
+  //     {
+  //       id: 41,
+  //       title: "About Page",
+  //       path: "/about",
+  //       newTab: false,
+  //     },
+  //     {
+  //       id: 42,
+  //       title: "Contact Page",
+  //       path: "/contact",
+  //       newTab: false,
+  //     },
+  //     {
+  //       id: 43,
+  //       title: "Blog Grid Page",
+  //       path: "/buy",
+  //       newTab: false,
+  //     },
+  //     {
+  //       id: 44,
+  //       title: "Blog Sidebar Page",
+  //       path: "/blog-sidebar",
+  //       newTab: false,
+  //     },
+  //     {
+  //       id: 45,
+  //       title: "Blog Details Page",
+  //       path: "/blog-details",
+  //       newTab: false,
+  //     },
+  //     {
+  //       id: 48,
+  //       title: "Error Page",
+  //       path: "/error",
+  //       newTab: false,
+  //     },
+  //   ],
+  // },
 ];
 export default menuData;

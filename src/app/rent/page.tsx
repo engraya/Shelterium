@@ -18,8 +18,8 @@ const RentPage = async () => {
   return (
     <>
       <Breadcrumb
-        pageName="Buy Page"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius eros eget sapien consectetur ultrices. Ut quis dapibus libero."
+        pageName="Rent Page"
+        description="This Page Showcases Properties available for Renting"
       />
       <section className="pb-[120px] pt-[80px]">
         <div className="container">

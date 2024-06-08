@@ -32,7 +32,7 @@ const SingleProperty = ({ property, path }) => {
             </Link>
           </h3>
           <div className="mb-4 flex justify-between border-b border-body-color border-opacity-10 pb-4 text-base font-medium text-body-color dark:border-white dark:border-opacity-10">
-          AED {property?.price}{property?.rentFrequency && `/${property?.rentFrequency}`} / month
+          AED {property?.price}{property?.rentFrequency && `/${property?.rentFrequency}`}/ month
             <div>
               <Image src={property?.agency?.logo?.url} height={50} width={50} alt="Agency Photo" className="rounded"/>
           </div>

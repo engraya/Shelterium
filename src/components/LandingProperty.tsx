@@ -21,12 +21,12 @@ function LandingProperty({ item }) {
         <div className="p-6 sm:p-8 md:px-6 md:py-6 lg:p-6 xl:px-5 xl:py-6 2xl:p-6">
           <h3>
             <div
-              className="mb-4 block text-md font-bold text-black hover:text-primary dark:text-white dark:hover:text-primary sm:text-xl"
+              className="mb-4 block text-md font-bold text-black hover:text-primary dark:text-slate-100 dark:hover:text-primary sm:text-xl"
             >
            {item?.title.length > 30 ? item?.title.substring(0, 30) + '...' : item?.title}
             </div>
           </h3>
-          <div className="mb-4 flex justify-between border-b border-gray-800 border-opacity-10 pb-4 text-base font-medium text-gray-800 dark:border-white dark:border-opacity-10">
+          <div className="mb-4 flex justify-between border-b border-gray-800 dark:text-slate-100 italic border-opacity-10 pb-4 text-base font-medium text-gray-800 dark:border-white dark:border-opacity-10">
           AED {item?.price}{item?.rentFrequency && `/${item?.rentFrequency}`} / month
             <div>
               <Image src={item?.agencyPhoto} height={50} width={50} alt="Agency Photo" className="rounded"/>
