@@ -4,8 +4,8 @@ import { getForRentData } from "utils/dataFetch";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Rent Properties | Propellio AI",
-  description: "Browse properties available for rent in Dubai and Abu Dhabi.",
+  title: "Properties for Rent",
+  description: "Discover rental properties across Dubai and Abu Dhabi.",
 };
 
 export default async function RentPage() {

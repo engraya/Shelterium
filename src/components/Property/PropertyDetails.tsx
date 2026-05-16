@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FaArrowLeft, FaBed, FaBath, FaPhone, FaWhatsapp, FaBuilding } from "react-icons/fa";
-import { BsGrid1X2Fill } from "react-icons/bs";
+import { ArrowLeft, Bed, Bath, LayoutGrid, Phone, MessageSquare, Building2, Check, BadgeCheck } from "lucide-react";
 import millify from "millify";
 import type { PropertyDetail } from "@/types/property";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { defaultImage } from "assets";
 
 type PropertyDetailsProps = {
@@ -62,7 +62,7 @@ export default function PropertyDetails({ property, purpose }: PropertyDetailsPr
           href={`/${purpose}`}
           className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-body-color transition-colors hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
         >
-          <FaArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
           Back to {purpose === "buy" ? "Buy" : "Rent"}
         </Link>
 
@@ -84,12 +84,15 @@ export default function PropertyDetails({ property, purpose }: PropertyDetailsPr
         {photos && photos.length > 0 && (
           <div className="mb-10 grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
             {photos.slice(0, 7).map((photo) => (
-              <div key={photo.id} className="relative aspect-square overflow-hidden rounded-lg">
+              <div
+                key={photo.id}
+                className="relative aspect-square overflow-hidden rounded-lg transition-transform duration-200 hover:scale-105 hover:ring-2 hover:ring-primary/40"
+              >
                 <Image
                   src={photo.url}
                   alt="Property photo"
                   fill
-                  className="object-cover transition-transform duration-200 hover:scale-105"
+                  className="object-cover"
                   sizes="12vw"
                 />
               </div>
@@ -134,15 +137,15 @@ export default function PropertyDetails({ property, purpose }: PropertyDetailsPr
               </div>
               <div className="flex items-center gap-6 text-sm text-body-color dark:text-body-color-dark">
                 <div className="flex items-center gap-1.5">
-                  <FaBed className="h-4 w-4 text-property-icon" aria-hidden="true" />
+                  <Bed className="h-4 w-4 text-property-icon" aria-hidden="true" />
                   <span>{rooms ?? "—"} beds</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <FaBath className="h-4 w-4 text-property-icon" aria-hidden="true" />
+                  <Bath className="h-4 w-4 text-property-icon" aria-hidden="true" />
                   <span>{baths ?? "—"} baths</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <BsGrid1X2Fill className="h-3.5 w-3.5 text-property-icon" aria-hidden="true" />
+                  <LayoutGrid className="h-3.5 w-3.5 text-property-icon" aria-hidden="true" />
                   <span>{millify(safeArea)} sqft</span>
                 </div>
               </div>
@@ -170,7 +173,7 @@ export default function PropertyDetails({ property, purpose }: PropertyDetailsPr
                   {specs.map(({ label, value }) => (
                     <div
                       key={label}
-                      className="rounded-lg border border-stroke-stroke bg-gray-light p-4 dark:border-stroke-dark dark:bg-dark"
+                      className="rounded-lg border border-stroke-stroke bg-muted p-4 dark:border-stroke-dark"
                     >
                       <p className="mb-1 text-xs font-medium uppercase tracking-wide text-body-color dark:text-body-color-dark">
                         {label}
@@ -196,7 +199,7 @@ export default function PropertyDetails({ property, purpose }: PropertyDetailsPr
                       key={amenity.text}
                       className="flex items-center gap-2 rounded-lg border border-stroke-stroke px-3 py-2.5 text-sm text-dark dark:border-stroke-dark dark:text-white"
                     >
-                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                      <Check className="h-3 w-3 shrink-0 text-primary" aria-hidden="true" />
                       {amenity.text}
                     </div>
                   ))}
@@ -236,86 +239,88 @@ export default function PropertyDetails({ property, purpose }: PropertyDetailsPr
 
           {/* Right: contact card */}
           <div className="w-full px-4 lg:w-4/12">
-            <div className="sticky top-24 rounded-card border border-stroke-stroke bg-white p-6 shadow-card dark:border-stroke-dark dark:bg-dark">
+            <Card className="sticky top-24 shadow-card dark:border-stroke-dark dark:bg-dark">
               {/* Agency branding */}
               {agency && (
-                <div className="mb-6 flex items-center gap-3 border-b border-stroke-stroke pb-6 dark:border-stroke-dark">
-                  {agency.logo?.url ? (
-                    <Image
-                      src={agency.logo.url}
-                      width={44}
-                      height={44}
-                      alt={agency.name}
-                      className="rounded-lg"
-                    />
-                  ) : (
-                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10">
-                      <FaBuilding className="h-5 w-5 text-primary" aria-hidden="true" />
+                <CardHeader className="border-b border-stroke-stroke pb-5 dark:border-stroke-dark">
+                  <div className="flex items-center gap-3">
+                    {agency.logo?.url ? (
+                      <Image
+                        src={agency.logo.url}
+                        width={44}
+                        height={44}
+                        alt={agency.name}
+                        className="rounded-lg"
+                      />
+                    ) : (
+                      <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10">
+                        <Building2 className="h-5 w-5 text-primary" aria-hidden="true" />
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-xs text-body-color dark:text-body-color-dark">Listed by</p>
+                      <p className="font-semibold text-dark dark:text-white">{agency.name}</p>
                     </div>
-                  )}
-                  <div>
-                    <p className="text-xs text-body-color dark:text-body-color-dark">Listed by</p>
-                    <p className="font-semibold text-dark dark:text-white">{agency.name}</p>
                   </div>
-                </div>
+                </CardHeader>
               )}
 
-              {/* Agent */}
-              {contactName && (
-                <div className="mb-4">
-                  <p className="mb-1 text-xs text-body-color dark:text-body-color-dark">Agent</p>
-                  <p className="font-semibold text-dark dark:text-white">{contactName}</p>
-                </div>
-              )}
+              <CardContent className="pt-5">
+                {/* Agent */}
+                {contactName && (
+                  <div className="mb-4">
+                    <p className="mb-1 text-xs text-body-color dark:text-body-color-dark">Agent</p>
+                    <p className="font-semibold text-dark dark:text-white">{contactName}</p>
+                  </div>
+                )}
 
-              {/* Price */}
-              <div className="mb-6 rounded-lg bg-primary/5 p-4 dark:bg-primary/10">
-                <p className="text-xs text-body-color dark:text-body-color-dark">Asking Price</p>
-                <p className="text-xl font-bold text-primary">
-                  AED {formattedPrice}
-                  {rentFrequency && (
-                    <span className="ml-1 text-sm font-normal text-body-color dark:text-body-color-dark">
-                      /{rentFrequency}
-                    </span>
+                {/* Price */}
+                <div className="mb-6 rounded-lg bg-primary/5 p-4 dark:bg-primary/10">
+                  <p className="text-xs text-body-color dark:text-body-color-dark">Asking Price</p>
+                  <p className="text-xl font-bold text-primary">
+                    AED {formattedPrice}
+                    {rentFrequency && (
+                      <span className="ml-1 text-sm font-normal text-body-color dark:text-body-color-dark">
+                        /{rentFrequency}
+                      </span>
+                    )}
+                  </p>
+                </div>
+
+                {/* CTA buttons */}
+                <div className="flex flex-col gap-3">
+                  {phoneNumber?.mobile && (
+                    <a href={`tel:${phoneNumber.mobile}`} className="w-full">
+                      <Button variant="primary" className="w-full">
+                        <Phone className="h-4 w-4" aria-hidden="true" />
+                        Call Agent
+                      </Button>
+                    </a>
                   )}
-                </p>
-              </div>
+                  {phoneNumber?.whatsapp && (
+                    <a
+                      href={`https://wa.me/${phoneNumber.whatsapp.replace(/\D/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <Button variant="secondary" className="w-full">
+                        <MessageSquare className="h-4 w-4" aria-hidden="true" />
+                        WhatsApp
+                      </Button>
+                    </a>
+                  )}
+                </div>
 
-              {/* CTA buttons */}
-              <div className="flex flex-col gap-3">
-                {phoneNumber?.mobile && (
-                  <a href={`tel:${phoneNumber.mobile}`} className="w-full">
-                    <Button variant="primary" className="w-full">
-                      <FaPhone className="h-4 w-4" aria-hidden="true" />
-                      Call Agent
-                    </Button>
-                  </a>
+                {/* Verified note */}
+                {isVerified && (
+                  <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-success">
+                    <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                    Verified listing
+                  </p>
                 )}
-                {phoneNumber?.whatsapp && (
-                  <a
-                    href={`https://wa.me/${phoneNumber.whatsapp.replace(/\D/g, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <Button variant="secondary" className="w-full">
-                      <FaWhatsapp className="h-4 w-4" aria-hidden="true" />
-                      WhatsApp
-                    </Button>
-                  </a>
-                )}
-              </div>
-
-              {/* Verified note */}
-              {isVerified && (
-                <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-success">
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-.947 3.392 3.745 3.745 0 01-3.392.947A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.392-.947 3.745 3.745 0 01-.947-3.392A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 01.947-3.392 3.746 3.746 0 013.392-.947A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.392.947 3.746 3.746 0 01.947 3.392A3.745 3.745 0 0121 12z" />
-                  </svg>
-                  Verified listing
-                </p>
-              )}
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

@@ -1,17 +1,16 @@
 "use client";
-import Image from "next/image";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Menu, ChevronDown } from "lucide-react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
-import { appLogo } from "assets";
 import Button from "@/components/ui/Button";
+import Logo from "@/components/ui/Logo";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
 const Header = () => {
-  const [navbarOpen, setNavbarOpen] = useState(false);
-  const navbarToggleHandler = () => setNavbarOpen((prev) => !prev);
-
   const [sticky, setSticky] = useState(false);
   useEffect(() => {
     const handleScroll = () => setSticky(window.scrollY >= 80);
@@ -20,17 +19,13 @@ const Header = () => {
   }, []);
 
   const [openIndex, setOpenIndex] = useState(-1);
-  const handleSubmenu = (index: number) => {
-    setOpenIndex((prev) => (prev === index ? -1 : index));
-  };
-
   const pathname = usePathname();
 
   return (
     <header
       className={`left-0 top-0 z-40 flex w-full items-center transition-all duration-300 ${
         sticky
-          ? "fixed z-[9999] bg-white/80 shadow-sticky backdrop-blur-md dark:bg-gray-dark/80 dark:shadow-sticky-dark"
+          ? "fixed z-[9999] bg-white/90 shadow-sticky backdrop-blur-md dark:bg-gray-dark/90 dark:shadow-sticky-dark"
           : "absolute bg-transparent"
       }`}
     >
@@ -38,64 +33,23 @@ const Header = () => {
         <div className="relative -mx-4 flex items-center justify-between">
           {/* Logo */}
           <div className="w-48 max-w-full px-4 xl:mr-12">
-            <Link
-              href="/"
-              className={`block w-full ${sticky ? "py-4 lg:py-2" : "py-6"}`}
-            >
-              <Image
-                src={appLogo}
-                alt="Propellio AI"
-                width={140}
-                height={30}
-                className="w-full"
-                priority
-              />
+            <Link href="/" className={`block w-full ${sticky ? "py-4 lg:py-2" : "py-6"}`}>
+              <Logo iconSize={30} textClassName="text-base" />
             </Link>
           </div>
 
-          {/* Nav + actions */}
+          {/* Desktop nav + actions */}
           <div className="flex w-full items-center justify-between px-4">
-            {/* Mobile toggle */}
-            <button
-              onClick={navbarToggleHandler}
-              id="navbarToggler"
-              aria-label={navbarOpen ? "Close menu" : "Open menu"}
-              aria-expanded={navbarOpen}
-              aria-controls="navbarCollapse"
-              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-lg p-2 ring-primary transition-colors hover:bg-gray-light focus-visible:ring-2 dark:hover:bg-dark lg:hidden"
-            >
-              <span
-                className={`relative my-1.5 block h-0.5 w-[26px] bg-black transition-all duration-300 dark:bg-white ${
-                  navbarOpen ? "top-[7px] rotate-45" : ""
-                }`}
-              />
-              <span
-                className={`relative my-1.5 block h-0.5 w-[26px] bg-black transition-all duration-300 dark:bg-white ${
-                  navbarOpen ? "opacity-0" : ""
-                }`}
-              />
-              <span
-                className={`relative my-1.5 block h-0.5 w-[26px] bg-black transition-all duration-300 dark:bg-white ${
-                  navbarOpen ? "top-[-8px] -rotate-45" : ""
-                }`}
-              />
-            </button>
-
-            {/* Nav */}
-            <nav
-              id="navbarCollapse"
-              className={`navbar absolute right-0 z-30 w-[260px] rounded-lg border border-body-color/20 bg-white px-6 py-4 shadow-two transition-all duration-300 dark:border-body-color/10 dark:bg-dark lg:visible lg:static lg:w-auto lg:border-none lg:bg-transparent lg:shadow-none lg:!opacity-100 dark:lg:bg-transparent ${
-                navbarOpen ? "visible top-full opacity-100" : "invisible top-[110%] opacity-0"
-              }`}
-            >
-              <ul className="block lg:flex lg:space-x-10">
+            {/* Desktop nav */}
+            <nav className="hidden lg:block">
+              <ul className="flex space-x-10">
                 {menuData.map((menuItem, index) => (
                   <li key={index} className="group relative">
                     {menuItem.path ? (
                       <Link
                         href={menuItem.path}
                         aria-current={pathname === menuItem.path ? "page" : undefined}
-                        className={`flex py-2 text-sm font-medium transition-colors duration-150 lg:inline-flex lg:px-0 lg:py-6 ${
+                        className={`flex py-6 text-sm font-medium transition-colors duration-150 ${
                           pathname === menuItem.path
                             ? "text-primary"
                             : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
@@ -107,32 +61,17 @@ const Header = () => {
                       <>
                         <button
                           type="button"
-                          onClick={() => handleSubmenu(index)}
-                          aria-expanded={openIndex === index}
-                          className="flex w-full cursor-pointer items-center justify-between py-2 text-sm font-medium text-dark transition-colors duration-150 group-hover:text-primary dark:text-white/70 dark:group-hover:text-white lg:inline-flex lg:w-auto lg:px-0 lg:py-6"
+                          className="flex cursor-pointer items-center gap-1 py-6 text-sm font-medium text-dark transition-colors duration-150 group-hover:text-primary dark:text-white/70 dark:group-hover:text-white"
                         >
                           {menuItem.title}
-                          <span className="pl-2">
-                            <svg width="16" height="16" viewBox="0 0 25 24" aria-hidden="true">
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M6.29289 8.8427C6.68342 8.45217 7.31658 8.45217 7.70711 8.8427L12 13.1356L16.2929 8.8427C16.6834 8.45217 17.3166 8.45217 17.7071 8.8427C18.0976 9.23322 18.0976 9.86639 17.7071 10.2569L12 15.964L6.29289 10.2569C5.90237 9.86639 5.90237 9.23322 6.29289 8.8427Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </span>
+                          <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
                         </button>
-                        <div
-                          className={`submenu left-0 top-full rounded-lg bg-white shadow-two transition-all duration-200 dark:bg-dark lg:invisible lg:absolute lg:top-[110%] lg:w-[220px] lg:p-4 lg:opacity-0 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100 ${
-                            openIndex === index ? "block" : "hidden lg:block"
-                          }`}
-                        >
+                        <div className="invisible absolute left-0 top-full z-50 min-w-[200px] rounded-lg bg-white p-2 opacity-0 shadow-two transition-all duration-200 group-hover:visible group-hover:top-[calc(100%-4px)] group-hover:opacity-100 dark:bg-dark">
                           {menuItem.submenu?.map((submenuItem, i) => (
                             <Link
                               href={submenuItem.path ?? "#"}
                               key={i}
-                              className="block rounded-md py-2.5 text-sm text-dark transition-colors hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3"
+                              className="block rounded-md px-3 py-2 text-sm text-dark transition-colors hover:bg-gray-light hover:text-primary dark:text-white/70 dark:hover:bg-dark dark:hover:text-white"
                             >
                               {submenuItem.title}
                             </Link>
@@ -153,15 +92,101 @@ const Header = () => {
               >
                 Sign In
               </Link>
-              <Link
-                href="/signup"
-                className="hidden md:block"
-              >
+              <Link href="/signup" className="hidden md:block">
                 <Button size="sm" variant="primary">
                   Sign Up
                 </Button>
               </Link>
               <ThemeToggler />
+
+              {/* Mobile menu trigger */}
+              <Sheet>
+                <SheetTrigger
+                  aria-label="Open menu"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-gray-light dark:hover:bg-dark lg:hidden"
+                >
+                  <Menu className="h-5 w-5 text-dark dark:text-white" aria-hidden="true" />
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[280px] bg-white dark:bg-dark p-0">
+                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                  <div className="flex h-full flex-col">
+                    {/* Sheet header */}
+                    <div className="border-b border-stroke-stroke px-6 py-5 dark:border-stroke-dark">
+                      <Link href="/">
+                        <Logo iconSize={26} textClassName="text-sm" />
+                      </Link>
+                    </div>
+
+                    {/* Sheet nav links */}
+                    <nav className="flex-1 overflow-y-auto px-4 py-6">
+                      <ul className="space-y-1">
+                        {menuData.map((menuItem, index) => (
+                          <li key={index}>
+                            {menuItem.path ? (
+                              <Link
+                                href={menuItem.path}
+                                aria-current={pathname === menuItem.path ? "page" : undefined}
+                                className={`flex rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                                  pathname === menuItem.path
+                                    ? "bg-primary/10 text-primary"
+                                    : "text-dark hover:bg-gray-light hover:text-primary dark:text-white/70 dark:hover:bg-dark dark:hover:text-white"
+                                }`}
+                              >
+                                {menuItem.title}
+                              </Link>
+                            ) : (
+                              <div>
+                                <button
+                                  type="button"
+                                  onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
+                                  className="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium text-dark transition-colors hover:bg-gray-light dark:text-white/70"
+                                >
+                                  {menuItem.title}
+                                  <ChevronDown
+                                    className={`h-4 w-4 transition-transform ${openIndex === index ? "rotate-180" : ""}`}
+                                    aria-hidden="true"
+                                  />
+                                </button>
+                                {openIndex === index && menuItem.submenu && (
+                                  <ul className="ml-4 mt-1 space-y-1 border-l border-stroke-stroke pl-4 dark:border-stroke-dark">
+                                    {menuItem.submenu.map((submenuItem, i) => (
+                                      <li key={i}>
+                                        <Link
+                                          href={submenuItem.path ?? "#"}
+                                          className="block rounded-md px-3 py-2 text-sm text-dark/70 transition-colors hover:text-primary dark:text-white/50 dark:hover:text-white"
+                                        >
+                                          {submenuItem.title}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </nav>
+
+                    {/* Sheet footer CTA */}
+                    <div className="border-t border-stroke-stroke px-6 py-5 dark:border-stroke-dark">
+                      <div className="flex flex-col gap-3">
+                        <Link
+                          href="/signin"
+                          className="text-center text-sm font-medium text-dark transition-colors hover:text-primary dark:text-white/70 dark:hover:text-white"
+                        >
+                          Sign In
+                        </Link>
+                        <Link href="/signup">
+                          <Button variant="primary" size="md" className="w-full">
+                            Get Started
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>

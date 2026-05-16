@@ -4,8 +4,8 @@ import { getForSaleData } from "utils/dataFetch";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Buy Properties | Propellio AI",
-  description: "Browse properties available for purchase in Dubai and Abu Dhabi.",
+  title: "Properties for Sale",
+  description: "Browse verified properties available for purchase across Dubai and Abu Dhabi.",
 };
 
 export default async function BuyPage() {

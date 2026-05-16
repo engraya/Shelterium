@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BsGithub, BsLinkedin, BsTwitterX } from "react-icons/bs";
+import { Code2, Briefcase, X } from "lucide-react";
 import { appLogo } from "assets";
+import Button from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -21,7 +24,19 @@ const propertyLinks = [
   { label: "Rental Listings", href: "/rent" },
 ];
 
+const socialLinks = [
+  {
+    href: "https://github.com/engraya/Propellio-AI",
+    label: "GitHub",
+    Icon: Code2,
+  },
+  { href: "https://linkedin.com", label: "LinkedIn", Icon: Briefcase },
+  { href: "https://twitter.com", label: "X / Twitter", Icon: X },
+];
+
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
   return (
     <footer className="relative z-10 bg-gray-light pt-16 dark:bg-gray-dark md:pt-20">
       <div className="container">
@@ -30,45 +45,24 @@ const Footer = () => {
           <div className="w-full px-4 md:w-1/2 lg:w-5/12 xl:w-4/12">
             <div className="mb-12 lg:mb-16">
               <Link href="/" className="mb-6 inline-block">
-                <Image
-                  src={appLogo}
-                  alt="Propellio AI"
-                  width={130}
-                  height={28}
-                  className="w-full"
-                />
+                <Image src={appLogo} alt="Propellio AI" width={130} height={28} className="w-full" />
               </Link>
               <p className="mb-8 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
                 Your trusted platform for discovering and securing premium properties across Dubai and Abu Dhabi. Verified listings, transparent pricing.
               </p>
-              <div className="flex items-center gap-4">
-                <a
-                  href="https://github.com/engraya/Propellio-AI"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-stroke-stroke text-body-color transition-colors hover:border-primary hover:text-primary dark:border-stroke-dark dark:text-body-color-dark dark:hover:border-primary dark:hover:text-primary"
-                >
-                  <BsGithub className="h-4 w-4" />
-                </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-stroke-stroke text-body-color transition-colors hover:border-primary hover:text-primary dark:border-stroke-dark dark:text-body-color-dark dark:hover:border-primary dark:hover:text-primary"
-                >
-                  <BsLinkedin className="h-4 w-4" />
-                </a>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="X / Twitter"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-stroke-stroke text-body-color transition-colors hover:border-primary hover:text-primary dark:border-stroke-dark dark:text-body-color-dark dark:hover:border-primary dark:hover:text-primary"
-                >
-                  <BsTwitterX className="h-4 w-4" />
-                </a>
+              <div className="flex items-center gap-3">
+                {socialLinks.map(({ href, label, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-stroke-stroke text-body-color transition-colors hover:border-primary hover:text-primary dark:border-stroke-dark dark:text-body-color-dark dark:hover:border-primary dark:hover:text-primary"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
@@ -81,7 +75,7 @@ const Footer = () => {
               </h3>
               <ul className="space-y-3">
                 {quickLinks.map((link) => (
-                  <li key={link.href + link.label}>
+                  <li key={link.label}>
                     <Link
                       href={link.href}
                       className="text-sm text-body-color transition-colors hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
@@ -124,21 +118,17 @@ const Footer = () => {
               <p className="mb-4 text-sm text-body-color dark:text-body-color-dark">
                 Get the latest listings and market insights delivered to your inbox.
               </p>
-              <form
-                onSubmit={(e) => e.preventDefault()}
-                className="flex overflow-hidden rounded-lg border border-stroke-stroke focus-within:border-primary dark:border-stroke-dark"
-              >
-                <input
+              <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
+                <Input
                   type="email"
                   placeholder="your@email.com"
-                  className="flex-1 bg-white px-4 py-3 text-sm text-dark outline-none placeholder:text-body-color dark:bg-dark dark:text-white dark:placeholder:text-body-color-dark"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1"
                 />
-                <button
-                  type="submit"
-                  className="bg-primary px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-primary/90"
-                >
+                <Button type="submit" variant="primary" size="md" className="shrink-0 px-4">
                   Subscribe
-                </button>
+                </Button>
               </form>
             </div>
           </div>

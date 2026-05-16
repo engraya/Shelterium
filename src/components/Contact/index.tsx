@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
-import { FaMapMarkerAlt, FaEnvelope, FaPhone } from "react-icons/fa";
-import Input from "@/components/ui/Input";
-import Textarea from "@/components/ui/Textarea";
+import { MapPin, Mail, Phone, CheckCircle2 } from "lucide-react";
+import Input from "@/components/ui/input";
+import Textarea from "@/components/ui/textarea";
 import Button from "@/components/ui/Button";
 
 const contactSchema = z.object({
@@ -19,17 +19,17 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 const contactInfo = [
   {
-    icon: FaMapMarkerAlt,
+    icon: MapPin,
     label: "Office",
     value: "Dubai, United Arab Emirates",
   },
   {
-    icon: FaEnvelope,
+    icon: Mail,
     label: "Email",
     value: "hello@propellio.ai",
   },
   {
-    icon: FaPhone,
+    icon: Phone,
     label: "Phone",
     value: "+971 4 000 0000",
   },
@@ -75,9 +75,7 @@ const Contact = () => {
                   role="alert"
                   className="mb-6 flex items-center gap-3 rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm font-medium text-success"
                 >
-                  <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" />
-                  </svg>
+                  <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
                   Message sent! We&apos;ll get back to you shortly.
                 </div>
               )}
@@ -152,7 +150,7 @@ const Contact = () => {
             <div className="overflow-hidden rounded-card border border-stroke-stroke bg-gray-light dark:border-stroke-dark dark:bg-dark">
               <div className="flex aspect-video items-center justify-center">
                 <div className="text-center">
-                  <FaMapMarkerAlt className="mx-auto mb-2 h-8 w-8 text-body-color/40 dark:text-body-color-dark/40" aria-hidden="true" />
+                  <MapPin className="mx-auto mb-2 h-8 w-8 text-body-color/40 dark:text-body-color-dark/40" aria-hidden="true" />
                   <p className="text-sm text-body-color dark:text-body-color-dark">
                     Dubai, UAE
                   </p>

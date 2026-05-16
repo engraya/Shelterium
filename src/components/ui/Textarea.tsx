@@ -1,54 +1,51 @@
-import { forwardRef, type TextareaHTMLAttributes } from "react";
-import { cn } from "@/lib/cn";
+import * as React from "react";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
-type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+export interface TextareaProps extends React.ComponentProps<"textarea"> {
   label?: string;
   error?: string;
   hint?: string;
-};
+}
 
-const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ label, error, hint, className, id, ...props }, ref) => {
-    const inputId = id ?? label?.toLowerCase().replace(/\s+/g, "-");
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ className, label, error, hint, id, ...props }, ref) => {
+    const textareaId = id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
+
     return (
-      <div className="flex flex-col gap-1.5">
+      <div className="w-full space-y-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-dark dark:text-white">
+          <Label htmlFor={textareaId} className="text-sm font-medium text-dark dark:text-white">
             {label}
-          </label>
+          </Label>
         )}
         <textarea
           ref={ref}
-          id={inputId}
-          className={cn(
-            "w-full rounded-md border bg-gray-light px-4 py-3 text-base text-dark outline-none transition-colors duration-200 resize-none",
-            "placeholder:text-body-color",
-            "focus:border-primary focus:ring-2 focus:ring-primary/20",
-            "dark:bg-gray-dark dark:border-stroke-dark dark:text-white dark:placeholder:text-body-color-dark dark:focus:border-primary",
-            error
-              ? "border-danger focus:border-danger focus:ring-danger/20"
-              : "border-stroke-stroke",
-            className,
-          )}
+          id={textareaId}
           aria-invalid={!!error}
-          aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
+          aria-describedby={error ? `${textareaId}-error` : hint ? `${textareaId}-hint` : undefined}
+          className={cn(
+            "flex min-h-[80px] w-full rounded-md border border-stroke-stroke bg-white px-3 py-2 text-sm text-dark ring-offset-background transition-colors placeholder:text-body-color/60 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-stroke-dark dark:bg-gray-dark dark:text-white dark:placeholder:text-body-color-dark/60",
+            error && "border-danger focus-visible:ring-danger/20",
+            className
+          )}
           {...props}
         />
         {error && (
-          <p id={`${inputId}-error`} className="text-sm text-danger" role="alert">
+          <p id={`${textareaId}-error`} className="text-xs text-danger" role="alert">
             {error}
           </p>
         )}
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="text-sm text-body-color dark:text-body-color-dark">
+          <p id={`${textareaId}-hint`} className="text-xs text-body-color dark:text-body-color-dark">
             {hint}
           </p>
         )}
       </div>
     );
-  },
+  }
 );
-
 Textarea.displayName = "Textarea";
 
 export default Textarea;
+export { Textarea };

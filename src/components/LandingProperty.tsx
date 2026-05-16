@@ -1,70 +1,76 @@
-import Image from "next/image";
-import { FaBed } from "react-icons/fa";
-import { FaBath } from "react-icons/fa";
-import { BsGrid1X2Fill } from "react-icons/bs";
-import { MdVerifiedUser } from "react-icons/md";
-import { defaultImage } from "assets";
+import Image, { StaticImageData } from "next/image";
+import Link from "next/link";
+import { Bed, Bath, LayoutGrid, BadgeCheck } from "lucide-react";
 import millify from "millify";
-function LandingProperty({ item }: { item: any }) {
+
+type StaticPropertyItem = {
+  id: number;
+  title: string;
+  rooms: number;
+  baths: number;
+  area: number;
+  rentFrequency: string | null;
+  isVerified: boolean;
+  coverPhoto: StaticImageData;
+  agencyPhoto: StaticImageData;
+  price: number;
+};
+
+function LandingProperty({ item }: { item: StaticPropertyItem }) {
+  const safeArea = Number(item.area) || 0;
+
   return (
-    <>
-      <div className="group relative overflow-hidden rounded-lg bg-white shadow-one duration-300 hover:shadow-two dark:bg-dark dark:hover:shadow-gray-dark">
-        <div
-          className="relative block aspect-[37/22] w-full"
+    <article className="group overflow-hidden rounded-card bg-white shadow-one transition-shadow duration-200 hover:shadow-card-hover dark:bg-dark">
+      <Link href={`/buy/${item.id}`} className="relative block aspect-[4/3] overflow-hidden">
+        <Image
+          src={item.coverPhoto}
+          alt={item.title}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, 33vw"
+        />
+        {item.isVerified && (
+          <div className="absolute left-3 top-3 z-10 flex items-center gap-1 rounded-full bg-primary px-2 py-1 text-xs font-semibold text-white">
+            <BadgeCheck className="h-3 w-3" aria-hidden="true" />
+            Verified
+          </div>
+        )}
+      </Link>
+
+      <div className="p-5">
+        <p className="mb-1 text-xl font-bold text-dark dark:text-white">
+          AED {millify(Number(item.price) || 0)}
+          {item.rentFrequency && (
+            <span className="ml-1 text-sm font-normal text-body-color dark:text-body-color-dark">
+              /{item.rentFrequency}
+            </span>
+          )}
+        </p>
+
+        <Link
+          href={`/buy/${item.id}`}
+          className="mb-4 block text-sm font-medium leading-snug text-body-color hover:text-primary dark:text-body-color-dark dark:hover:text-primary line-clamp-2"
         >
-          {item?.isVerified &&<span className="absolute right-6 top-6 z-20 inline-flex items-center justify-center rounded-full bg-green-400 px-2 py-1 text-sm font-semibold capitalize text-white">
-          <MdVerifiedUser size={"1rem"} /> 
-          </span>}
-     
-          <Image src={item?.coverPhoto || defaultImage} alt="image" fill />
-        </div>
-        <div className="p-6 sm:p-8 md:px-6 md:py-6 lg:p-6 xl:px-5 xl:py-6 2xl:p-6">
-          <h3>
-            <div
-              className="mb-4 block text-md font-bold text-black hover:text-primary dark:text-slate-100 dark:hover:text-primary sm:text-xl"
-            >
-           {item?.title.length > 30 ? item?.title.substring(0, 30) + '...' : item?.title}
-            </div>
-          </h3>
-          <div className="mb-4 flex justify-between border-b border-gray-800 dark:text-slate-100 italic border-opacity-10 pb-4 text-base font-medium text-gray-800 dark:border-white dark:border-opacity-10">
-          AED {item?.price}{item?.rentFrequency && `/${item?.rentFrequency}`} / month
-            <div>
-              <Image src={item?.agencyPhoto} height={50} width={50} alt="Agency Photo" className="rounded"/>
-          </div>
-          </div>
-    
-          <div className="flex items-center justify-around">
-            <div className="flex items-center dark:border-white dark:border-opacity-10">
-              <div className="mr-4 border-r border-body-color border-opacity-10 pr-10">
-              <div className="inline-block">
-              <h4 className="mb-1 text-sm font-medium text-dark dark:text-white">
-              <FaBed size={"1.5rem"} color="#52c7e7"/>
-              </h4>
-              <div className="text-sm flex justify-center items-center text-body-color">{item?.rooms}</div>
-            </div>
-              </div>
-              <div className="mr-4 border-r border-body-color border-opacity-10 pr-10">
-              <div className="inline-block">
-              <h4 className="mb-1 text-sm font-medium text-dark dark:text-white">
-              <FaBath size={"1.5rem"} color="#52c7e7"/>
-              </h4>
-              <div className="text-sm justify-center items-center flex text-body-color">{item?.baths}</div>
-            </div>
-              </div>
-              <div className="mr-4 ">
-              <div className="inline-block">
-              <h4 className="mb-1 text-sm font-medium text-dark dark:text-white">
-              <BsGrid1X2Fill size={"1.5rem"} color="#52c7e7"/>
-              </h4>
-              <div className="text-sm justify-center items-center flex text-body-color"> {millify(item?.area)} sqft</div>
-            </div>
-              </div>
-            </div>
-          </div>
+          {item.title}
+        </Link>
+
+        <div className="flex items-center gap-4 border-t border-stroke-stroke pt-4 text-sm text-body-color dark:border-stroke-dark dark:text-body-color-dark">
+          <span className="flex items-center gap-1">
+            <Bed className="h-4 w-4" aria-hidden="true" />
+            {item.rooms} Bed
+          </span>
+          <span className="flex items-center gap-1">
+            <Bath className="h-4 w-4" aria-hidden="true" />
+            {item.baths} Bath
+          </span>
+          <span className="flex items-center gap-1">
+            <LayoutGrid className="h-4 w-4" aria-hidden="true" />
+            {millify(safeArea)} sqft
+          </span>
         </div>
       </div>
-    </>
-  )
+    </article>
+  );
 }
 
-export default LandingProperty
+export default LandingProperty;

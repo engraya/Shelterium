@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Button from "@/components/ui/Button";
-import { TbHomeOff } from "react-icons/tb";
+import { Building2 } from "lucide-react";
 
 export default function PropertyNotFound() {
   return (
@@ -8,7 +8,7 @@ export default function PropertyNotFound() {
       <div className="container">
         <div className="flex flex-col items-center justify-center text-center">
           <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
-            <TbHomeOff className="h-12 w-12 text-primary" aria-hidden="true" />
+            <Building2 className="h-12 w-12 text-primary" aria-hidden="true" />
           </div>
 
           <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
