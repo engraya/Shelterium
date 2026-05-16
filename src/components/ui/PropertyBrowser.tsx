@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import FilterBar from "./FilterBar";
 import PropertyGrid from "./PropertyGrid";
+import NLSearchBar from "@/components/ai/NLSearchBar";
 import type { PropertyListItem, PropertyListParams } from "@/types/property";
 import { useProperties } from "@/features/properties/hooks/useProperties";
 
@@ -23,9 +24,12 @@ export default function PropertyBrowser({ initialProperties, purpose }: Property
   const properties = showSSR ? initialProperties : (data ?? []);
   const loading = isLoading && !showSSR;
 
-  const handleFilter = useCallback((newParams: Partial<PropertyListParams>) => {
-    setActiveParams({ purpose: purposeValue, ...newParams });
-  }, [purposeValue]);
+  const handleFilter = useCallback(
+    (newParams: Partial<PropertyListParams>) => {
+      setActiveParams({ purpose: purposeValue, ...newParams });
+    },
+    [purposeValue],
+  );
 
   const handleReset = useCallback(() => {
     setActiveParams(null);
@@ -33,6 +37,7 @@ export default function PropertyBrowser({ initialProperties, purpose }: Property
 
   return (
     <>
+      <NLSearchBar onResult={handleFilter} purpose={purpose} />
       <FilterBar onFilter={handleFilter} onReset={handleReset} purpose={purpose} />
       <PropertyGrid
         properties={properties}

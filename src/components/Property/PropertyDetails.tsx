@@ -6,6 +6,7 @@ import type { PropertyDetail } from "@/types/property";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import PriceIntelCard from "@/components/ai/PriceIntelCard";
 import { defaultImage } from "assets";
 
 type PropertyDetailsProps = {
@@ -321,6 +322,9 @@ export default function PropertyDetails({ property, purpose }: PropertyDetailsPr
                 )}
               </CardContent>
             </Card>
+
+            {/* AI Price Intelligence */}
+            <PriceIntelCard property={property} />
           </div>
         </div>
       </div>
