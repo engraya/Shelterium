@@ -6,7 +6,7 @@ import { BsGrid1X2Fill } from "react-icons/bs";
 import { MdVerifiedUser } from "react-icons/md";
 import { defaultImage } from "assets";
 import millify from "millify";
-const SingleProperty = ({ property, path }) => { 
+const SingleProperty = ({ property, path }: { property: any; path: string }) => {
 
 
   return (

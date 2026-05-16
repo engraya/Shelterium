@@ -1,59 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const BAYUT_BASE_URL = "https://bayut.p.rapidapi.com";
+import { db } from "@/lib/db";
+import { properties } from "@/lib/db/schema";
+import { toListItem } from "@/lib/db/mappers";
+import { and, eq, gte, lte, desc, asc, sql } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
-  const apiKey = process.env.RAPID_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: "API key not configured" }, { status: 500 });
-  }
+  const p = new URL(request.url).searchParams;
 
-  const { searchParams } = new URL(request.url);
-  const purpose = searchParams.get("purpose") ?? "for-sale";
-  const hitsPerPage = searchParams.get("hitsPerPage") ?? "30";
-  const sort = searchParams.get("sort") ?? "city-level-score";
-  const rentFrequency = searchParams.get("rentFrequency") ?? undefined;
-  const minPrice = searchParams.get("minPrice") ?? undefined;
-  const maxPrice = searchParams.get("maxPrice") ?? undefined;
-  const roomsMin = searchParams.get("roomsMin") ?? undefined;
-  const bathsMin = searchParams.get("bathsMin") ?? undefined;
-  const areaMax = searchParams.get("areaMax") ?? undefined;
-  const categoryExternalID = searchParams.get("categoryExternalID") ?? undefined;
+  const purpose         = p.get("purpose") ?? "for-sale";
+  const rentFrequency   = p.get("rentFrequency") ?? undefined;
+  const furnishingStatus = p.get("furnishingStatus") ?? undefined;
+  const minPrice        = p.get("minPrice")  ? Number(p.get("minPrice"))  : undefined;
+  const maxPrice        = p.get("maxPrice")  ? Number(p.get("maxPrice"))  : undefined;
+  const roomsMin        = p.get("roomsMin")  ? Number(p.get("roomsMin"))  : undefined;
+  const bathsMin        = p.get("bathsMin")  ? Number(p.get("bathsMin"))  : undefined;
+  const areaMax         = p.get("areaMax")   ? Number(p.get("areaMax"))   : undefined;
+  const sortParam       = p.get("sort") ?? "city-level-score";
 
-  const params = new URLSearchParams({
-    locationExternalIDs: "5002,6020",
-    purpose,
-    hitsPerPage,
-    lang: "en",
-    sort,
-    ...(rentFrequency && { rentFrequency }),
-    ...(minPrice && { minPrice }),
-    ...(maxPrice && { maxPrice }),
-    ...(roomsMin && { roomsMin }),
-    ...(bathsMin && { bathsMin }),
-    ...(areaMax && { areaMax }),
-    ...(categoryExternalID && { categoryExternalID }),
-  });
+  const orderBy =
+    sortParam === "price-asc"  ? asc(sql`${properties.price}::numeric`) :
+    sortParam === "price-desc" ? desc(sql`${properties.price}::numeric`) :
+    sortParam === "verified-score" ? desc(properties.isVerified) :
+    desc(properties.isVerified);
 
-  try {
-    const response = await fetch(`${BAYUT_BASE_URL}/properties/list?${params}`, {
-      headers: {
-        "X-RapidAPI-Key": apiKey,
-        "X-RapidAPI-Host": "bayut.p.rapidapi.com",
-      },
-      next: { revalidate: 300 },
-    });
+  const rows = await db
+    .select()
+    .from(properties)
+    .where(
+      and(
+        eq(properties.purpose, purpose),
+        rentFrequency    ? eq(properties.rentFrequency, rentFrequency)       : undefined,
+        furnishingStatus ? eq(properties.furnishingStatus, furnishingStatus) : undefined,
+        minPrice !== undefined ? gte(sql`${properties.price}::numeric`, minPrice) : undefined,
+        maxPrice !== undefined ? lte(sql`${properties.price}::numeric`, maxPrice) : undefined,
+        roomsMin !== undefined ? gte(properties.rooms, roomsMin)                  : undefined,
+        bathsMin !== undefined ? gte(properties.baths, bathsMin)                  : undefined,
+        areaMax  !== undefined ? lte(sql`${properties.area}::numeric`, areaMax)   : undefined,
+      ),
+    )
+    .orderBy(orderBy)
+    .limit(30);
 
-    if (!response.ok) {
-      return NextResponse.json(
-        { error: "Upstream API error", code: response.status },
-        { status: 502 }
-      );
-    }
-
-    const data = await response.json();
-    return NextResponse.json(data.hits ?? []);
-  } catch {
-    return NextResponse.json({ error: "Failed to fetch properties" }, { status: 500 });
-  }
+  return NextResponse.json(rows.map(toListItem));
 }

@@ -12,7 +12,7 @@ import dd from "./dd.jpg"
 import agency1 from "./agency1.png"
 import agency2 from "./agency2.jpg"
 import agency3 from "./agency3.jpg"
-import appLogo from "./shelterium.png"
+import appLogo from "./propellio-ai.png"
 
 
 export {

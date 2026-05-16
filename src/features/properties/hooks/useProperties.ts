@@ -10,6 +10,7 @@ async function fetchPropertiesClient(params: Partial<PropertyListParams>): Promi
   if (params.maxPrice) searchParams.set("maxPrice", String(params.maxPrice));
   if (params.sort) searchParams.set("sort", params.sort);
   if (params.rentFrequency) searchParams.set("rentFrequency", params.rentFrequency);
+  if (params.furnishingStatus) searchParams.set("furnishingStatus", params.furnishingStatus);
   if (params.roomsMin) searchParams.set("roomsMin", String(params.roomsMin));
   if (params.bathsMin) searchParams.set("bathsMin", String(params.bathsMin));
   if (params.areaMax) searchParams.set("areaMax", String(params.areaMax));

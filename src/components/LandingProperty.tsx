@@ -5,7 +5,7 @@ import { BsGrid1X2Fill } from "react-icons/bs";
 import { MdVerifiedUser } from "react-icons/md";
 import { defaultImage } from "assets";
 import millify from "millify";
-function LandingProperty({ item }) {
+function LandingProperty({ item }: { item: any }) {
   return (
     <>
       <div className="group relative overflow-hidden rounded-lg bg-white shadow-one duration-300 hover:shadow-two dark:bg-dark dark:hover:shadow-gray-dark">

@@ -1,26 +1,36 @@
 import Link from "next/link";
+import Button from "@/components/ui/Button";
+import { TbHomeOff } from "react-icons/tb";
 
 export default function PropertyNotFound() {
   return (
-    <section className="relative z-10 py-[120px]">
+    <section className="relative z-10 flex min-h-screen items-center py-[120px]">
       <div className="container">
         <div className="flex flex-col items-center justify-center text-center">
-          <div className="mx-auto max-w-[530px]">
-            <h1 className="mb-4 text-[80px] font-bold leading-none text-primary">
-              404
-            </h1>
-            <h2 className="mb-4 text-3xl font-bold text-black dark:text-white sm:text-4xl">
-              Property Not Found
-            </h2>
-            <p className="mb-8 text-base font-medium text-body-color">
-              The property you are looking for does not exist or is no longer
-              available.
-            </p>
-            <Link
-              href="/buy"
-              className="inline-block rounded-sm bg-primary px-8 py-3 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90"
-            >
-              Browse Properties for Sale
+          <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
+            <TbHomeOff className="h-12 w-12 text-primary" aria-hidden="true" />
+          </div>
+
+          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
+            Not Available
+          </p>
+          <h1 className="mb-4 text-heading-1 font-bold text-dark dark:text-white">
+            Property Not Found
+          </h1>
+          <p className="mb-8 max-w-md text-base text-body-color dark:text-body-color-dark">
+            This property no longer exists or has been removed from our listings.
+          </p>
+
+          <div className="flex items-center gap-4">
+            <Link href="/buy">
+              <Button variant="primary" size="lg">
+                Browse Properties for Sale
+              </Button>
+            </Link>
+            <Link href="/rent">
+              <Button variant="secondary" size="lg">
+                See Rentals
+              </Button>
             </Link>
           </div>
         </div>

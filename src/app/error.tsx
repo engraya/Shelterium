@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import Button from "@/components/ui/Button";
 
 export default function GlobalError({
   error,
@@ -15,34 +16,41 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <section className="relative z-10 py-[120px]">
+    <section className="relative z-10 flex min-h-screen items-center py-[120px]">
       <div className="container">
         <div className="flex flex-col items-center justify-center text-center">
-          <div className="mx-auto max-w-[530px]">
-            <div className="mb-8 text-[80px] font-bold leading-none text-primary opacity-20">
-              Oops
-            </div>
-            <h1 className="mb-4 text-3xl font-bold text-black dark:text-white sm:text-4xl">
-              Something went wrong
-            </h1>
-            <p className="mb-8 text-base font-medium text-body-color">
-              An unexpected error occurred. Please try again, or return to the
-              home page.
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <button
-                onClick={reset}
-                className="rounded-sm bg-primary px-8 py-3 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90"
-              >
-                Try Again
-              </button>
-              <Link
-                href="/"
-                className="rounded-sm border border-primary px-8 py-3 text-base font-medium text-primary duration-300 hover:bg-primary hover:text-white"
-              >
-                Back to Home
-              </Link>
-            </div>
+          <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-danger/10">
+            <svg
+              className="h-12 w-12 text-danger"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+          </div>
+
+          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-danger">
+            Error
+          </p>
+          <h1 className="mb-4 text-heading-1 font-bold text-dark dark:text-white">
+            Something Went Wrong
+          </h1>
+          <p className="mb-8 max-w-md text-base text-body-color dark:text-body-color-dark">
+            An unexpected error occurred. Please try again, or return to the home page.
+          </p>
+
+          <div className="flex items-center gap-4">
+            <Button variant="primary" size="lg" onClick={reset}>
+              Try Again
+            </Button>
+            <Link href="/">
+              <Button variant="secondary" size="lg">
+                Go Home
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

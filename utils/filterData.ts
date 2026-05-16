@@ -58,8 +58,7 @@ export const filterData: FilterGroup[] = [
   {
     items: [
       { name: "Lowest Price", value: "price-asc" },
-      { name: "Highest Price", value: "price-des" },
-      { name: "Newest", value: "date-asc" },
+      { name: "Highest Price", value: "price-desc" },
       { name: "Verified", value: "verified-score" },
       { name: "City Level Score", value: "city-level-score" },
     ],
@@ -105,7 +104,7 @@ export const filterData: FilterGroup[] = [
       { name: "Unfurnished", value: "unfurnished" },
     ],
     placeholder: "Furnish Type",
-    queryName: "rentFrequency",
+    queryName: "furnishingStatus",
   },
   {
     items: [
@@ -124,6 +123,7 @@ export const getFilterValues = (filterValues: Partial<PropertyListParams>) => {
   const {
     purpose,
     rentFrequency,
+    furnishingStatus,
     categoryExternalID,
     minPrice,
     maxPrice,
@@ -136,6 +136,7 @@ export const getFilterValues = (filterValues: Partial<PropertyListParams>) => {
   return [
     { name: "purpose", value: purpose },
     { name: "rentFrequency", value: rentFrequency },
+    { name: "furnishingStatus", value: furnishingStatus },
     { name: "minPrice", value: minPrice },
     { name: "maxPrice", value: maxPrice },
     { name: "areaMax", value: areaMax },

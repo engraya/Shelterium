@@ -16,22 +16,11 @@ module.exports = {
 
     screens: {
       xs: "450px",
-      // => @media (min-width: 450px) { ... }
-
       sm: "575px",
-      // => @media (min-width: 576px) { ... }
-
       md: "768px",
-      // => @media (min-width: 768px) { ... }
-
       lg: "992px",
-      // => @media (min-width: 992px) { ... }
-
       xl: "1200px",
-      // => @media (min-width: 1200px) { ... }
-
       "2xl": "1400px",
-      // => @media (min-width: 1400px) { ... }
     },
     extend: {
       colors: {
@@ -56,6 +45,23 @@ module.exports = {
           dark: "#1E232E",
           light: "#F0F2F9",
         },
+        // Design system tokens
+        "property-icon": "#0891B2",
+        success: "#10B981",
+        danger: "#EF4444",
+        warning: "#F59E0B",
+      },
+
+      fontSize: {
+        display: ["3.75rem", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "800" }],
+        "heading-1": ["2.25rem", { lineHeight: "1.15", fontWeight: "700" }],
+        "heading-2": ["1.5rem", { lineHeight: "1.25", fontWeight: "600" }],
+        "heading-3": ["1.125rem", { lineHeight: "1.35", fontWeight: "600" }],
+      },
+
+      borderRadius: {
+        card: "12px",
+        pill: "9999px",
       },
 
       boxShadow: {
@@ -71,9 +77,37 @@ module.exports = {
         btn: "0px 1px 2px rgba(4, 10, 34, 0.15)",
         "btn-hover": "0px 1px 2px rgba(0, 0, 0, 0.15)",
         "btn-light": "0px 1px 2px rgba(0, 0, 0, 0.1)",
+        card: "0px 4px 24px rgba(6, 8, 15, 0.08)",
+        "card-hover": "0px 8px 32px rgba(6, 8, 15, 0.14)",
       },
+
       dropShadow: {
         three: "0px 5px 15px rgba(6, 8, 15, 0.05)",
+      },
+
+      transitionTimingFunction: {
+        smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
+      },
+
+      transitionDuration: {
+        DEFAULT: "200ms",
+      },
+
+      animation: {
+        "pulse-slow": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "fade-in": "fadeIn 0.2s ease-out",
+        "slide-up": "slideUp 0.25s ease-out",
+      },
+
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
       },
     },
   },

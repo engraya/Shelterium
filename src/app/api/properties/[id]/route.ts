@@ -1,46 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const BAYUT_BASE_URL = "https://bayut.p.rapidapi.com";
+import { db } from "@/lib/db";
+import { properties } from "@/lib/db/schema";
+import { toDetail } from "@/lib/db/mappers";
+import { eq } from "drizzle-orm";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
-  const apiKey = process.env.RAPID_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: "API key not configured" }, { status: 500 });
-  }
-
   const { id } = params;
   if (!id) {
     return NextResponse.json({ error: "Property ID is required" }, { status: 400 });
   }
 
-  try {
-    const response = await fetch(
-      `${BAYUT_BASE_URL}/properties/detail?externalID=${encodeURIComponent(id)}`,
-      {
-        headers: {
-          "X-RapidAPI-Key": apiKey,
-          "X-RapidAPI-Host": "bayut.p.rapidapi.com",
-        },
-        next: { revalidate: 600 },
-      }
-    );
+  const rows = await db
+    .select()
+    .from(properties)
+    .where(eq(properties.externalId, id))
+    .limit(1);
 
-    if (!response.ok) {
-      if (response.status === 404) {
-        return NextResponse.json({ error: "Property not found" }, { status: 404 });
-      }
-      return NextResponse.json(
-        { error: "Upstream API error", code: response.status },
-        { status: 502 }
-      );
-    }
-
-    const data = await response.json();
-    return NextResponse.json(data);
-  } catch {
-    return NextResponse.json({ error: "Failed to fetch property details" }, { status: 500 });
+  if (!rows[0]) {
+    return NextResponse.json({ error: "Property not found" }, { status: 404 });
   }
+
+  return NextResponse.json(toDetail(rows[0]));
 }

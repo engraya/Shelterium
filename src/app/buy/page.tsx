@@ -1,10 +1,10 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import PropertyGrid from "@/components/ui/PropertyGrid";
+import PropertyBrowser from "@/components/ui/PropertyBrowser";
 import { getForSaleData } from "utils/dataFetch";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Buy Properties | Shelterium",
+  title: "Buy Properties | Propellio AI",
   description: "Browse properties available for purchase in Dubai and Abu Dhabi.",
 };
 
@@ -14,12 +14,12 @@ export default async function BuyPage() {
   return (
     <>
       <Breadcrumb
-        pageName="Buy Page"
-        description="This Page Showcases Properties available for Buying"
+        pageName="Properties for Sale"
+        description="Explore verified listings for sale across Dubai and Abu Dhabi."
       />
       <section className="pb-[120px] pt-[80px]">
         <div className="container">
-          <PropertyGrid properties={properties} path="buy" />
+          <PropertyBrowser initialProperties={properties} purpose="buy" />
         </div>
       </section>
     </>

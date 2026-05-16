@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FaArrowLeft, FaBed, FaBath } from "react-icons/fa";
+import { FaArrowLeft, FaBed, FaBath, FaPhone, FaWhatsapp, FaBuilding } from "react-icons/fa";
 import { BsGrid1X2Fill } from "react-icons/bs";
-import { MdVerified, MdVerifiedUser } from "react-icons/md";
 import millify from "millify";
-import TagButton from "@/components/Buy/TagButton";
-import PropertyContactBox from "@/components/PropertyContactBox/PropertyContactBox";
 import type { PropertyDetail } from "@/types/property";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import { defaultImage } from "assets";
 
 type PropertyDetailsProps = {
   property: PropertyDetail;
@@ -38,221 +38,284 @@ export default function PropertyDetails({ property, purpose }: PropertyDetailsPr
   } = property;
 
   const safeArea = Number(area) || 0;
+  const formattedPrice = millify(Number(price) || 0);
+  const coverSrc = coverPhoto?.url ?? defaultImage;
+
+  const specs = [
+    { label: "Type", value: type },
+    { label: "Purpose", value: purpose === "buy" ? "For Sale" : "For Rent" },
+    { label: "State", value: state },
+    { label: "Product", value: product },
+    { label: "Completion", value: completionStatus },
+    ...(purpose === "rent" && furnishingStatus
+      ? [{ label: "Furnishing", value: furnishingStatus }]
+      : []),
+  ].filter((s) => s.value);
+
+  const allAmenities = amenities?.flatMap((g) => g.amenities ?? []) ?? [];
 
   return (
     <section className="overflow-hidden pb-[120px] pt-[150px]">
       <div className="container">
-        <Link href={`/${purpose}`}>
-          <button
-            type="button"
-            className="mb-2 me-2 flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-teal-200 to-lime-200 px-3 py-2 text-center text-sm font-medium text-gray-900 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:outline-none focus:ring-4 focus:ring-lime-200 dark:focus:ring-teal-700"
-          >
-            <FaArrowLeft />
-            Back
-          </button>
+        {/* Back link */}
+        <Link
+          href={`/${purpose}`}
+          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-body-color transition-colors hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
+        >
+          <FaArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          Back to {purpose === "buy" ? "Buy" : "Rent"}
         </Link>
 
+        {/* Hero image */}
+        <div className="mb-4 overflow-hidden rounded-card">
+          <div className="relative aspect-video w-full">
+            <Image
+              src={coverSrc}
+              alt={title}
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+          </div>
+        </div>
+
+        {/* Photo strip */}
+        {photos && photos.length > 0 && (
+          <div className="mb-10 grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
+            {photos.slice(0, 7).map((photo) => (
+              <div key={photo.id} className="relative aspect-square overflow-hidden rounded-lg">
+                <Image
+                  src={photo.url}
+                  alt="Property photo"
+                  fill
+                  className="object-cover transition-transform duration-200 hover:scale-105"
+                  sizes="12vw"
+                />
+              </div>
+            ))}
+            {photos.length > 7 && (
+              <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg bg-black/60">
+                <span className="text-sm font-semibold text-white">+{photos.length - 7}</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 2-column layout */}
         <div className="-mx-4 flex flex-wrap">
-          {/* Main content */}
+          {/* Left: main content */}
           <div className="w-full px-4 lg:w-8/12">
-            <div>
-              <h1 className="mb-8 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight">
-                {title}
-              </h1>
-
-              <div className="mb-10 flex flex-wrap items-center justify-between border-b border-body-color border-opacity-10 pb-4 dark:border-white dark:border-opacity-10">
-                <div className="flex flex-wrap items-center">
-                  <div className="mb-5 mr-10 flex items-center">
-                    {isVerified && (
-                      <div className="mr-4">
-                        <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                          <MdVerifiedUser size="2rem" />
-                        </div>
-                      </div>
-                    )}
-                    <div className="w-full">
-                      <span className="mb-1 text-base font-medium text-body-color">
-                        AED {price}
-                        {rentFrequency && `/${rentFrequency}`}
-                        <span>/ month</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mb-5 flex items-center">
-                    <p className="mr-5 flex items-center text-base font-medium text-body-color">
-                      <span className="mr-3">
-                        <FaBed size="1.5rem" color="#075970" />
-                      </span>
-                      {rooms}
-                    </p>
-                    <p className="mr-5 flex items-center text-base font-medium text-body-color">
-                      <span className="mr-3">
-                        <FaBath size="1.5rem" color="#075970" />
-                      </span>
-                      {baths}
-                    </p>
-                    <p className="flex items-center text-base font-medium text-body-color">
-                      <span className="mr-3">
-                        <BsGrid1X2Fill size="1.5rem" color="#075970" />
-                      </span>
-                      {millify(safeArea)} sqft
-                    </p>
-                  </div>
-                </div>
-
-                {isVerified && (
-                  <div className="mb-5">
-                    <div className="inline-flex items-center justify-center rounded-full bg-green-400 px-4 py-2 text-sm font-semibold text-white">
-                      <MdVerified size="1.4rem" />
-                      verified
-                    </div>
-                  </div>
-                )}
+            {/* Title + badges */}
+            <div className="mb-6 flex flex-wrap items-start gap-3">
+              <div className="flex-1">
+                <h1 className="text-heading-1 font-bold text-dark dark:text-white">{title}</h1>
               </div>
+              <div className="flex shrink-0 gap-2">
+                {isVerified && <Badge variant="verified" />}
+                <Badge variant={purpose === "buy" ? "for-sale" : "for-rent"}>
+                  {purpose === "buy" ? "For Sale" : "For Rent"}
+                </Badge>
+              </div>
+            </div>
 
-              {/* Images */}
+            {/* Price + specs row */}
+            <div className="mb-8 flex flex-wrap items-center gap-6 border-b border-stroke-stroke pb-8 dark:border-stroke-dark">
               <div>
-                <div className="mb-10 w-full overflow-hidden rounded">
-                  <div className="grid gap-4">
-                    {coverPhoto?.url && (
-                      <div>
-                        <Image
-                          className="h-auto w-full rounded-lg"
-                          src={coverPhoto.url}
-                          height={500}
-                          width={500}
-                          alt={title}
-                          priority
-                        />
-                      </div>
-                    )}
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-                      {photos?.map((photo) => (
-                        <div key={photo.id}>
-                          <Image
-                            className="h-auto max-w-full rounded-lg"
-                            src={photo.url}
-                            width={300}
-                            height={300}
-                            alt="property-photo"
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                <p className="text-sm text-body-color dark:text-body-color-dark">Price</p>
+                <p className="text-2xl font-bold text-dark dark:text-white">
+                  AED {formattedPrice}
+                  {rentFrequency && (
+                    <span className="ml-1 text-base font-normal text-body-color dark:text-body-color-dark">
+                      /{rentFrequency}
+                    </span>
+                  )}
+                </p>
+              </div>
+              <div className="flex items-center gap-6 text-sm text-body-color dark:text-body-color-dark">
+                <div className="flex items-center gap-1.5">
+                  <FaBed className="h-4 w-4 text-property-icon" aria-hidden="true" />
+                  <span>{rooms ?? "—"} beds</span>
                 </div>
-
-                {/* Description */}
-                <div className="relative z-10 mb-10 overflow-hidden rounded-md bg-primary bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">
-                  <p className="text-center text-base font-medium italic text-body-color">
-                    {description}
-                  </p>
-                  <span className="absolute left-0 top-0 z-[-1]">
-                    <svg width="132" height="109" viewBox="0 0 132 109" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path opacity="0.5" d="M33.0354 90.11C19.9851 102.723 -3.75916 101.834 -14 99.8125V-15H132C131.456 -12.4396 127.759 -2.95278 117.318 14.5117C104.268 36.3422 78.7114 31.8952 63.2141 41.1934C47.7169 50.4916 49.3482 74.3435 33.0354 90.11Z" fill="url(#paint0_linear_111:606)" />
-                      <path opacity="0.5" d="M33.3654 85.0768C24.1476 98.7862 1.19876 106.079 -9.12343 108.011L-38.876 22.9988L100.816 -25.8905C100.959 -23.8126 99.8798 -15.5499 94.4164 0.87754C87.5871 21.4119 61.9822 26.677 49.5641 38.7512C37.146 50.8253 44.8877 67.9401 33.3654 85.0768Z" fill="url(#paint1_linear_111:606)" />
-                      <defs>
-                        <linearGradient id="paint0_linear_111:606" x1="94.7523" y1="82.0246" x2="8.40951" y2="52.0609" gradientUnits="userSpaceOnUse">
-                          <stop stopColor="white" stopOpacity="0.06" /><stop offset="1" stopColor="white" stopOpacity="0" />
-                        </linearGradient>
-                        <linearGradient id="paint1_linear_111:606" x1="90.3206" y1="58.4236" x2="1.16149" y2="50.8365" gradientUnits="userSpaceOnUse">
-                          <stop stopColor="white" stopOpacity="0.06" /><stop offset="1" stopColor="white" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </span>
-                  <span className="absolute bottom-0 right-0 z-[-1]">
-                    <svg width="53" height="30" viewBox="0 0 53 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle opacity="0.8" cx="37.5" cy="37.5" r="37.5" fill="#4A6CF7" />
-                      <mask id="mask0_111:596" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="75" height="75">
-                        <circle opacity="0.8" cx="37.5" cy="37.5" r="37.5" fill="#4A6CF7" />
-                      </mask>
-                      <g mask="url(#mask0_111:596)">
-                        <circle opacity="0.8" cx="37.5" cy="37.5" r="37.5" fill="url(#paint0_radial_111:596)" />
-                        <g opacity="0.8" filter="url(#filter0_f_111:596)">
-                          <circle cx="40.8089" cy="19.853" r="15.4412" fill="white" />
-                        </g>
-                      </g>
-                      <defs>
-                        <filter id="filter0_f_111:596" x="4.36768" y="-16.5881" width="72.8823" height="72.8823" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-                          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                          <feGaussianBlur stdDeviation="10.5" result="effect1_foregroundBlur_111:596" />
-                        </filter>
-                        <radialGradient id="paint0_radial_111:596" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(37.5 37.5) rotate(90) scale(40.2574)">
-                          <stop stopOpacity="0.47" /><stop offset="1" stopOpacity="0" />
-                        </radialGradient>
-                      </defs>
-                    </svg>
-                  </span>
+                <div className="flex items-center gap-1.5">
+                  <FaBath className="h-4 w-4 text-property-icon" aria-hidden="true" />
+                  <span>{baths ?? "—"} baths</span>
                 </div>
-
-                {/* Agency + Reference */}
-                <div className="items-center justify-between sm:flex">
-                  <div className="mb-5">
-                    <h4 className="mb-3 text-sm font-medium text-body-color">Agency</h4>
-                    <div className="flex items-center">
-                      <TagButton text={agency?.name} />
-                    </div>
-                  </div>
-                  <div className="mb-5">
-                    <h5 className="mb-3 text-sm font-medium text-body-color sm:text-right">
-                      Reference Number :
-                    </h5>
-                    <div className="flex items-center sm:justify-end">
-                      <TagButton text={referenceNumber} />
-                    </div>
-                  </div>
+                <div className="flex items-center gap-1.5">
+                  <BsGrid1X2Fill className="h-3.5 w-3.5 text-property-icon" aria-hidden="true" />
+                  <span>{millify(safeArea)} sqft</span>
                 </div>
               </div>
+            </div>
+
+            {/* Description */}
+            {description && (
+              <div className="mb-8">
+                <h2 className="mb-3 text-heading-3 font-semibold text-dark dark:text-white">
+                  Description
+                </h2>
+                <p className="leading-relaxed text-body-color dark:text-body-color-dark">
+                  {description}
+                </p>
+              </div>
+            )}
+
+            {/* Specifications grid */}
+            {specs.length > 0 && (
+              <div className="mb-8">
+                <h2 className="mb-4 text-heading-3 font-semibold text-dark dark:text-white">
+                  Specifications
+                </h2>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {specs.map(({ label, value }) => (
+                    <div
+                      key={label}
+                      className="rounded-lg border border-stroke-stroke bg-gray-light p-4 dark:border-stroke-dark dark:bg-dark"
+                    >
+                      <p className="mb-1 text-xs font-medium uppercase tracking-wide text-body-color dark:text-body-color-dark">
+                        {label}
+                      </p>
+                      <p className="text-sm font-semibold capitalize text-dark dark:text-white">
+                        {value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Amenities */}
+            {allAmenities.length > 0 && (
+              <div className="mb-8">
+                <h2 className="mb-4 text-heading-3 font-semibold text-dark dark:text-white">
+                  Amenities
+                </h2>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {allAmenities.map((amenity) => (
+                    <div
+                      key={amenity.text}
+                      className="flex items-center gap-2 rounded-lg border border-stroke-stroke px-3 py-2.5 text-sm text-dark dark:border-stroke-dark dark:text-white"
+                    >
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                      {amenity.text}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Agency + Reference */}
+            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-stroke-stroke pt-6 dark:border-stroke-dark">
+              {agency?.name && (
+                <div className="flex items-center gap-3">
+                  {agency.logo?.url && (
+                    <Image
+                      src={agency.logo.url}
+                      width={40}
+                      height={40}
+                      alt={agency.name}
+                      className="rounded-md"
+                    />
+                  )}
+                  <div>
+                    <p className="text-xs text-body-color dark:text-body-color-dark">Agency</p>
+                    <p className="text-sm font-semibold text-dark dark:text-white">{agency.name}</p>
+                  </div>
+                </div>
+              )}
+              {referenceNumber && (
+                <div>
+                  <p className="text-xs text-body-color dark:text-body-color-dark">Reference</p>
+                  <Badge variant="neutral" className="mt-1 font-mono text-xs">
+                    {referenceNumber}
+                  </Badge>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Sidebar */}
+          {/* Right: contact card */}
           <div className="w-full px-4 lg:w-4/12">
-            <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
-              <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-center text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
-                More About Property
-              </h3>
-              <ul className="px-8 py-6">
-                {[
-                  { label: "Type", value: type },
-                  { label: "Purpose", value: purpose === "buy" ? "For Sale" : "For Rent" },
-                  { label: "State", value: state },
-                  { label: "Product", value: product },
-                  { label: "Completion Status", value: completionStatus },
-                  ...(purpose === "rent" && furnishingStatus
-                    ? [{ label: "Furnishing", value: furnishingStatus }]
-                    : []),
-                ].map(({ label, value }) => (
-                  <li key={label} className="mb-4 flex flex-col">
-                    <div className="flex items-center justify-between">
-                      <div className="text-base font-medium text-body-color hover:text-primary">
-                        {label}
-                      </div>
-                      <div>{value}</div>
+            <div className="sticky top-24 rounded-card border border-stroke-stroke bg-white p-6 shadow-card dark:border-stroke-dark dark:bg-dark">
+              {/* Agency branding */}
+              {agency && (
+                <div className="mb-6 flex items-center gap-3 border-b border-stroke-stroke pb-6 dark:border-stroke-dark">
+                  {agency.logo?.url ? (
+                    <Image
+                      src={agency.logo.url}
+                      width={44}
+                      height={44}
+                      alt={agency.name}
+                      className="rounded-lg"
+                    />
+                  ) : (
+                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10">
+                      <FaBuilding className="h-5 w-5 text-primary" aria-hidden="true" />
                     </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                  )}
+                  <div>
+                    <p className="text-xs text-body-color dark:text-body-color-dark">Listed by</p>
+                    <p className="font-semibold text-dark dark:text-white">{agency.name}</p>
+                  </div>
+                </div>
+              )}
 
-            <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
-              <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-center text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
-                Amenities
-              </h3>
-              <div className="flex flex-wrap items-center justify-center px-8 py-6">
-                {amenities?.map((group) =>
-                  group.amenities?.map((amenity) => (
-                    <TagButton text={amenity.text} key={amenity.text} />
-                  ))
+              {/* Agent */}
+              {contactName && (
+                <div className="mb-4">
+                  <p className="mb-1 text-xs text-body-color dark:text-body-color-dark">Agent</p>
+                  <p className="font-semibold text-dark dark:text-white">{contactName}</p>
+                </div>
+              )}
+
+              {/* Price */}
+              <div className="mb-6 rounded-lg bg-primary/5 p-4 dark:bg-primary/10">
+                <p className="text-xs text-body-color dark:text-body-color-dark">Asking Price</p>
+                <p className="text-xl font-bold text-primary">
+                  AED {formattedPrice}
+                  {rentFrequency && (
+                    <span className="ml-1 text-sm font-normal text-body-color dark:text-body-color-dark">
+                      /{rentFrequency}
+                    </span>
+                  )}
+                </p>
+              </div>
+
+              {/* CTA buttons */}
+              <div className="flex flex-col gap-3">
+                {phoneNumber?.mobile && (
+                  <a href={`tel:${phoneNumber.mobile}`} className="w-full">
+                    <Button variant="primary" className="w-full">
+                      <FaPhone className="h-4 w-4" aria-hidden="true" />
+                      Call Agent
+                    </Button>
+                  </a>
+                )}
+                {phoneNumber?.whatsapp && (
+                  <a
+                    href={`https://wa.me/${phoneNumber.whatsapp.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full"
+                  >
+                    <Button variant="secondary" className="w-full">
+                      <FaWhatsapp className="h-4 w-4" aria-hidden="true" />
+                      WhatsApp
+                    </Button>
+                  </a>
                 )}
               </div>
-            </div>
 
-            <PropertyContactBox contactName={contactName} phoneNumber={phoneNumber} />
+              {/* Verified note */}
+              {isVerified && (
+                <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-success">
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-.947 3.392 3.745 3.745 0 01-3.392.947A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.392-.947 3.745 3.745 0 01-.947-3.392A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 01.947-3.392 3.746 3.746 0 013.392-.947A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.392.947 3.746 3.746 0 01.947 3.392A3.745 3.745 0 0121 12z" />
+                  </svg>
+                  Verified listing
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>

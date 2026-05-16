@@ -10,8 +10,8 @@ import Video from "@/components/Video";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Shelterium",
-  description: "This is Home for Shelterium",
+  title: "Propellio AI",
+  description: "This is Home for Propellio AI",
   // other metadata
 };
 

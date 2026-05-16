@@ -80,6 +80,7 @@ export type PropertyListParams = {
   maxPrice?: number;
   sort?: string;
   rentFrequency?: string;
+  furnishingStatus?: string;
   roomsMin?: number;
   bathsMin?: number;
   areaMax?: number;

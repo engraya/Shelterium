@@ -1,10 +1,10 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import PropertyGrid from "@/components/ui/PropertyGrid";
+import PropertyBrowser from "@/components/ui/PropertyBrowser";
 import { getForRentData } from "utils/dataFetch";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Rent Properties | Shelterium",
+  title: "Rent Properties | Propellio AI",
   description: "Browse properties available for rent in Dubai and Abu Dhabi.",
 };
 
@@ -14,12 +14,12 @@ export default async function RentPage() {
   return (
     <>
       <Breadcrumb
-        pageName="Rent Page"
-        description="This Page Showcases Properties available for Renting"
+        pageName="Properties for Rent"
+        description="Discover rental properties across Dubai and Abu Dhabi."
       />
       <section className="pb-[120px] pt-[80px]">
         <div className="container">
-          <PropertyGrid properties={properties} path="rent" />
+          <PropertyBrowser initialProperties={properties} purpose="rent" />
         </div>
       </section>
     </>

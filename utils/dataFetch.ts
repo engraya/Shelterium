@@ -1,60 +1,36 @@
-import axios from "axios";
+import { db } from "@/lib/db";
+import { properties } from "@/lib/db/schema";
+import { toListItem, toDetail } from "@/lib/db/mappers";
+import { eq, desc } from "drizzle-orm";
+import type { PropertyListItem, PropertyDetail } from "@/types/property";
 
 export const baseUrl = "https://bayut.p.rapidapi.com";
 
-const getHeaders = () => ({
-  "X-RapidAPI-Key": process.env.RAPID_API_KEY as string,
-  "X-RapidAPI-Host": "bayut.p.rapidapi.com",
-});
-
-export async function getForRentData() {
-  try {
-    const response = await axios.get(`${baseUrl}/properties/list`, {
-      params: {
-        locationExternalIDs: "5002,6020",
-        purpose: "for-rent",
-        hitsPerPage: "30",
-        lang: "en",
-        sort: "city-level-score",
-        rentFrequency: "monthly",
-      },
-      headers: getHeaders(),
-    });
-    return response.data?.hits ?? [];
-  } catch (error) {
-    console.error("[getForRentData]", error);
-    return [];
-  }
+export async function getForRentData(): Promise<PropertyListItem[]> {
+  const rows = await db
+    .select()
+    .from(properties)
+    .where(eq(properties.purpose, "for-rent"))
+    .orderBy(desc(properties.isVerified))
+    .limit(30);
+  return rows.map(toListItem);
 }
 
-export async function getForSaleData() {
-  try {
-    const response = await axios.get(`${baseUrl}/properties/list`, {
-      params: {
-        locationExternalIDs: "5002,6020",
-        purpose: "for-sale",
-        hitsPerPage: "30",
-        lang: "en",
-        sort: "city-level-score",
-      },
-      headers: getHeaders(),
-    });
-    return response.data?.hits ?? [];
-  } catch (error) {
-    console.error("[getForSaleData]", error);
-    return [];
-  }
+export async function getForSaleData(): Promise<PropertyListItem[]> {
+  const rows = await db
+    .select()
+    .from(properties)
+    .where(eq(properties.purpose, "for-sale"))
+    .orderBy(desc(properties.isVerified))
+    .limit(30);
+  return rows.map(toListItem);
 }
 
-export async function getPropertyDetails(id: string) {
-  try {
-    const response = await axios.get(`${baseUrl}/properties/detail`, {
-      params: { externalID: id },
-      headers: getHeaders(),
-    });
-    return response.data ?? null;
-  } catch (error) {
-    console.error("[getPropertyDetails]", error);
-    return null;
-  }
+export async function getPropertyDetails(id: string): Promise<PropertyDetail | null> {
+  const rows = await db
+    .select()
+    .from(properties)
+    .where(eq(properties.externalId, id))
+    .limit(1);
+  return rows[0] ? toDetail(rows[0]) : null;
 }
