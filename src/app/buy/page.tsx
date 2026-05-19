@@ -3,6 +3,8 @@ import PropertyBrowser from "@/components/ui/PropertyBrowser";
 import { getForSaleData } from "utils/dataFetch";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Properties for Sale",
   description: "Browse verified properties available for purchase across Dubai and Abu Dhabi.",

@@ -3,6 +3,8 @@ import PropertyBrowser from "@/components/ui/PropertyBrowser";
 import { getForRentData } from "utils/dataFetch";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Properties for Rent",
   description: "Discover rental properties across Dubai and Abu Dhabi.",
