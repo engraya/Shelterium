@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       generationConfig: { maxOutputTokens: 256 },
     });
     const response = await model.generateContent(query);
-    const raw = response.response.text().trim();
+    const raw = response.response.text().trim().replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "").trim();
     const parsed = FilterParamsSchema.parse(JSON.parse(raw));
 
     // Strip null values — only return fields that were actually set
@@ -59,7 +59,8 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json(result);
-  } catch {
+  } catch (err) {
+    console.error("[ai/search]", err);
     return NextResponse.json({ error: "Failed to parse query" }, { status: 500 });
   }
 }

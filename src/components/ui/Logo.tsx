@@ -25,9 +25,9 @@ export default function Logo({ className, iconSize = 30, textClassName = "text-[
       </svg>
 
       {/* Wordmark — text color adapts to dark mode */}
-      <span className={cn("font-bold leading-none", textClassName)}>
-        <span className="text-dark dark:text-white">Shelter</span>
-        <span className="text-primary">ium</span>
+      <span className={cn("font-bold leading-none whitespace-nowrap", textClassName)}>
+        <span className="text-dark dark:text-white">Shelterium</span>
+        <span className="text-primary"> AI</span>
       </span>
     </span>
   );

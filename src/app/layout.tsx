@@ -10,8 +10,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "Shelterium — Real Estate in Dubai & Abu Dhabi",
-    template: "%s | Shelterium",
+    default: "Shelterium AI — Real Estate in Dubai & Abu Dhabi",
+    template: "%s | Shelterium AI",
   },
   description:
     "Discover thousands of verified property listings for sale and rent across Dubai and Abu Dhabi.",

@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Code2, Briefcase, X } from "lucide-react";
-import { appLogo } from "assets";
+import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -45,7 +44,7 @@ const Footer = () => {
           <div className="w-full px-4 md:w-1/2 lg:w-5/12 xl:w-4/12">
             <div className="mb-12 lg:mb-16">
               <Link href="/" className="mb-6 inline-block">
-                <Image src={appLogo} alt="Propellio AI" width={130} height={28} className="w-full" />
+                <Logo iconSize={28} textClassName="text-base" />
               </Link>
               <p className="mb-8 text-sm leading-relaxed text-body-color dark:text-body-color-dark">
                 Your trusted platform for discovering and securing premium properties across Dubai and Abu Dhabi. Verified listings, transparent pricing.
@@ -138,7 +137,7 @@ const Footer = () => {
         <div className="border-t border-stroke-stroke py-8 dark:border-stroke-dark">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-body-color dark:text-body-color-dark">
-              &copy; {new Date().getFullYear()} Propellio AI. All rights reserved.
+              &copy; {new Date().getFullYear()} Shelterium AI. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link

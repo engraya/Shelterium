@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { Menu, ChevronDown } from "lucide-react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
-import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
@@ -86,17 +85,6 @@ const Header = () => {
 
             {/* Auth + Theme */}
             <div className="flex items-center gap-3 pr-16 lg:pr-0">
-              <Link
-                href="/signin"
-                className="hidden text-sm font-medium text-dark transition-colors hover:text-primary dark:text-white/70 dark:hover:text-white md:block"
-              >
-                Sign In
-              </Link>
-              <Link href="/signup" className="hidden md:block">
-                <Button size="sm" variant="primary">
-                  Sign Up
-                </Button>
-              </Link>
               <ThemeToggler />
 
               {/* Mobile menu trigger */}
@@ -168,22 +156,6 @@ const Header = () => {
                       </ul>
                     </nav>
 
-                    {/* Sheet footer CTA */}
-                    <div className="border-t border-stroke-stroke px-6 py-5 dark:border-stroke-dark">
-                      <div className="flex flex-col gap-3">
-                        <Link
-                          href="/signin"
-                          className="text-center text-sm font-medium text-dark transition-colors hover:text-primary dark:text-white/70 dark:hover:text-white"
-                        >
-                          Sign In
-                        </Link>
-                        <Link href="/signup">
-                          <Button variant="primary" size="md" className="w-full">
-                            Get Started
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
                   </div>
                 </SheetContent>
               </Sheet>
