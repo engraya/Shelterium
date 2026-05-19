@@ -3,6 +3,8 @@ import Breadcrumb from "@/components/Common/Breadcrumb";
 import { getForRentData } from "utils/dataFetch";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Rent Page | Shelterium",
   description: "This is a Page for Rent",

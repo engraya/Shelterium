@@ -1,8 +1,9 @@
 import SingleProperty from "@/components/Buy/SingleProperty";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { getForSaleData } from "utils/dataFetch";
-
 import { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Buy | Buy Page for Shelterium",

@@ -21,8 +21,13 @@ export async function getForRentData() {
     }
   };
 
+  try {
     const response = await axios.request(options);
-  return response?.data?.hits
+    return response?.data?.hits ?? [];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
 
 
@@ -46,10 +51,10 @@ export async function getForSaleData() {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
-    return response?.data?.hits
+    return response?.data?.hits ?? [];
   } catch (error) {
     console.error(error);
+    return [];
   }
 
 
