@@ -1,81 +1,162 @@
-import NewsLatterBox from "./NewsLatterBox";
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useState } from "react";
+import { MapPin, Mail, Phone, CheckCircle2 } from "lucide-react";
+import Input from "@/components/ui/input";
+import Textarea from "@/components/ui/textarea";
+import Button from "@/components/ui/Button";
+
+const contactSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().email("Please enter a valid email address"),
+  message: z.string().min(10, "Message must be at least 10 characters").max(2000),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
+
+const contactInfo = [
+  {
+    icon: MapPin,
+    label: "Office",
+    value: "Dubai, United Arab Emirates",
+  },
+  {
+    icon: Mail,
+    label: "Email",
+    value: "hello@propellio.ai",
+  },
+  {
+    icon: Phone,
+    label: "Phone",
+    value: "+971 4 000 0000",
+  },
+];
 
 const Contact = () => {
+  const [submitted, setSubmitted] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    mode: "onBlur",
+  });
+
+  const onSubmit = async (data: ContactFormData) => {
+    await new Promise((r) => setTimeout(r, 800));
+    console.info("Contact form submitted:", data);
+    setSubmitted(true);
+    reset();
+    setTimeout(() => setSubmitted(false), 5000);
+  };
+
   return (
     <section id="contact" className="overflow-hidden py-16 md:py-20 lg:py-28">
       <div className="container">
-        <div className="-mx-4 flex flex-wrap">
-          <div className="w-full px-4 lg:w-7/12 xl:w-8/12">
-            <div
-              className="mb-12 rounded-sm bg-white px-8 py-11 shadow-three dark:bg-gray-dark sm:p-[55px] lg:mb-5 lg:px-8 xl:p-[55px]"
-              data-wow-delay=".15s
-              "
-            >
-              <h2 className="mb-3 text-2xl font-bold text-black dark:text-white sm:text-3xl lg:text-2xl xl:text-3xl">
-                Need Help?
+        <div className="-mx-4 flex flex-wrap gap-y-12">
+          {/* Left: Form */}
+          <div className="w-full px-4 lg:w-7/12">
+            <div className="rounded-card border border-stroke-stroke bg-white p-8 shadow-card dark:border-stroke-dark dark:bg-dark sm:p-12">
+              <h2 className="mb-2 text-heading-2 font-bold text-dark dark:text-white">
+                Get in Touch
               </h2>
-              <p className="mb-12 text-base font-medium text-body-color">
-              For direct inquiries, please fill out the form below and our team will get back to you as soon as possible.
+              <p className="mb-8 text-base text-body-color dark:text-body-color-dark">
+                Have a question about a listing? Our team responds within 24 hours.
               </p>
-              <form>
-                <div className="-mx-4 flex flex-wrap">
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="name"
-                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                      >
-                        Your Name
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter your name"
-                        className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="email"
-                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                      >
-                        Your Email
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="Enter your email"
-                        className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="message"
-                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                      >
-                        Your Message
-                      </label>
-                      <textarea
-                        name="message"
-                        rows={5}
-                        placeholder="Enter your Message"
-                        className="border-stroke w-full resize-none rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                      ></textarea>
-                    </div>
-                  </div>
-                  <div className="w-full px-4">
-                    <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full transition-transform transform-gpu hover:-translate-y-1 hover:shadow-lg">
-                      Submit
-                    </button>
-                  </div>
+
+              {submitted && (
+                <div
+                  role="alert"
+                  className="mb-6 flex items-center gap-3 rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm font-medium text-success"
+                >
+                  <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
+                  Message sent! We&apos;ll get back to you shortly.
                 </div>
+              )}
+
+              <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <Input
+                    label="Your Name"
+                    type="text"
+                    placeholder="Ahmad Al-Raya"
+                    error={errors.name?.message}
+                    {...register("name")}
+                  />
+                  <Input
+                    label="Your Email"
+                    type="email"
+                    placeholder="you@example.com"
+                    error={errors.email?.message}
+                    {...register("email")}
+                  />
+                </div>
+
+                <Textarea
+                  label="Message"
+                  rows={5}
+                  placeholder="Tell us how we can help..."
+                  error={errors.message?.message}
+                  {...register("message")}
+                />
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending…" : "Send Message"}
+                </Button>
               </form>
             </div>
           </div>
-          <div className="w-full px-4 lg:w-5/12 xl:w-4/12">
-            <NewsLatterBox />
+
+          {/* Right: Contact info */}
+          <div className="w-full px-4 lg:w-5/12">
+            <div className="mb-8">
+              <h3 className="mb-2 text-heading-3 font-semibold text-dark dark:text-white">
+                Contact Information
+              </h3>
+              <p className="text-sm text-body-color dark:text-body-color-dark">
+                Reach us directly through any of the channels below.
+              </p>
+            </div>
+
+            <ul className="mb-10 space-y-5">
+              {contactInfo.map(({ icon: Icon, label, value }) => (
+                <li key={label} className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wide text-body-color dark:text-body-color-dark">
+                      {label}
+                    </p>
+                    <p className="text-sm font-semibold text-dark dark:text-white">{value}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* Map placeholder */}
+            <div className="overflow-hidden rounded-card border border-stroke-stroke bg-gray-light dark:border-stroke-dark dark:bg-dark">
+              <div className="flex aspect-video items-center justify-center">
+                <div className="text-center">
+                  <MapPin className="mx-auto mb-2 h-8 w-8 text-body-color/40 dark:text-body-color-dark/40" aria-hidden="true" />
+                  <p className="text-sm text-body-color dark:text-body-color-dark">
+                    Dubai, UAE
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

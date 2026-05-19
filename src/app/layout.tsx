@@ -1,13 +1,24 @@
-"use client";
-
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Inter } from "next/font/google";
-import "node_modules/react-modal-video/css/modal-video.css";
 import "../styles/index.css";
+import { Providers } from "./providers";
+import type { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: {
+    default: "Shelterium AI — Real Estate in Dubai & Abu Dhabi",
+    template: "%s | Shelterium AI",
+  },
+  description:
+    "Discover thousands of verified property listings for sale and rent across Dubai and Abu Dhabi.",
+  icons: {
+    icon: "/favicon.svg",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -16,13 +27,8 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      {/*
-        <head /> will contain the components returned by the nearest parent
-        head.js. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
       <head />
-
-      <body className={`bg-[#FCFCFC] dark:bg-black ${inter.className}`}>
+      <body className={`bg-background text-foreground ${inter.className}`}>
         <Providers>
           <Header />
           {children}
@@ -33,5 +39,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-import { Providers } from "./providers";

@@ -1,6 +1,11 @@
 import axios from "axios";
+import { db } from "@/lib/db";
+import { properties } from "@/lib/db/schema";
+import { toListItem, toDetail } from "@/lib/db/mappers";
+import { eq, desc } from "drizzle-orm";
+import type { PropertyListItem, PropertyDetail } from "@/types/property";
 
-export const baseUrl = 'https://bayut.p.rapidapi.com';
+export const baseUrl = "https://bayut.p.rapidapi.com";
 
 
 export async function getForRentData() {
@@ -61,39 +66,11 @@ export async function getForSaleData() {
 
 }
 
-
-export async function getPropertyDetails(id) {
-  const options = {
-    method: 'GET',
-    url: `${baseUrl}/properties/detail`,
-    params: {
-      externalID: id
-    },
-    headers: {
-      'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY,
-      'X-RapidAPI-Host': 'bayut.p.rapidapi.com'
-    }
-  };
-  try {
-    const response = await axios.request(options);
-    console.log(response.data);
-    return response?.data
-  } catch (error) {
-    console.error(error);
-  }
-
+export async function getPropertyDetails(id: string): Promise<PropertyDetail | null> {
+  const rows = await db
+    .select()
+    .from(properties)
+    .where(eq(properties.externalId, id))
+    .limit(1);
+  return rows[0] ? toDetail(rows[0]) : null;
 }
-
-
-export const fetchApi = async (url) => {
-  const { data } = await axios.get((url), {
-    headers: {
-      'X-RapidAPI-Host': 'bayut.p.rapidapi.com',
-      'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_API_KEY,
-    },
-  });
-    
-  return data;
-}
-
-

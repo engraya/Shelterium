@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
 const Breadcrumb = ({
   pageName,
@@ -8,117 +9,55 @@ const Breadcrumb = ({
   description: string;
 }) => {
   return (
-    <>
-      <section className="relative z-10 overflow-hidden pt-28 lg:pt-[150px]">
-        <div className="container">
-          <div className="-mx-4 flex flex-wrap items-center">
-            <div className="w-full px-4 md:w-8/12 lg:w-7/12">
-              <div className="mb-8 max-w-[570px] md:mb-0 lg:mb-12">
-                <h1 className="mb-5 text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                  {pageName}
-                </h1>
-                <p className="text-base font-medium leading-relaxed text-body-color">
-                  {description}
-                </p>
-              </div>
-            </div>
-            <div className="w-full px-4 md:w-4/12 lg:w-5/12">
-              <div className="text-end">
-                <ul className="flex items-center md:justify-end">
-                  <li className="flex items-center">
-                    <Link
-                      href="/"
-                      className="pr-1 text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Home
-                    </Link>
-                    <span className="mr-3 block h-2 w-2 rotate-45 border-r-2 border-t-2 border-body-color"></span>
-                  </li>
-                  <li className="text-base font-medium text-primary">
-                    {pageName}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+    <section className="relative z-10 overflow-hidden pb-12 pt-28 lg:pt-[150px]">
+      {/* Base background */}
+      <div className="absolute inset-0 bg-gray-light dark:bg-dark" />
 
-        <div>
-          <span className="absolute left-0 top-0 z-[-1]">
-            <svg
-              width="287"
-              height="254"
-              viewBox="0 0 287 254"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                opacity="0.1"
-                d="M286.5 0.5L-14.5 254.5V69.5L286.5 0.5Z"
-                fill="url(#paint0_linear_111:578)"
-              />
-              <defs>
-                <linearGradient
-                  id="paint0_linear_111:578"
-                  x1="-40.5"
-                  y1="117"
-                  x2="301.926"
-                  y2="-97.1485"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#4A6CF7" />
-                  <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </span>
-          <span className="absolute right-0 top-0 z-[-1]">
-            <svg
-              width="628"
-              height="258"
-              viewBox="0 0 628 258"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                opacity="0.1"
-                d="M669.125 257.002L345.875 31.9983L524.571 -15.8832L669.125 257.002Z"
-                fill="url(#paint0_linear_0:1)"
-              />
-              <path
-                opacity="0.1"
-                d="M0.0716344 182.78L101.988 -15.0769L142.154 81.4093L0.0716344 182.78Z"
-                fill="url(#paint1_linear_0:1)"
-              />
-              <defs>
-                <linearGradient
-                  id="paint0_linear_0:1"
-                  x1="644"
-                  y1="221"
-                  x2="429.946"
-                  y2="37.0429"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#4A6CF7" />
-                  <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-                </linearGradient>
-                <linearGradient
-                  id="paint1_linear_0:1"
-                  x1="18.3648"
-                  y1="166.016"
-                  x2="105.377"
-                  y2="32.3398"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#4A6CF7" />
-                  <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </span>
-        </div>
-      </section>
-    </>
+      {/* Dot-grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.045] dark:opacity-[0.08]"
+        style={{
+          backgroundImage: "radial-gradient(circle, #4A6CF7 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Top-right glow */}
+      <div
+        className="absolute right-0 top-0 z-[-1] h-96 w-96 -translate-y-1/3 translate-x-1/3 rounded-full bg-primary opacity-[0.08] blur-3xl dark:opacity-[0.14]"
+        aria-hidden="true"
+      />
+      {/* Bottom-left accent glow */}
+      <div
+        className="absolute bottom-0 left-0 z-[-1] h-64 w-64 translate-y-1/3 -translate-x-1/3 rounded-full bg-purple-500 opacity-[0.05] blur-3xl dark:opacity-[0.08]"
+        aria-hidden="true"
+      />
+
+      <div className="container relative">
+        {/* Breadcrumb nav — appears above the title */}
+        <nav aria-label="Breadcrumb" className="mb-4 flex items-center gap-1.5 text-sm">
+          <Link
+            href="/"
+            className="font-medium text-body-color transition-colors hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
+          >
+            Home
+          </Link>
+          <ChevronRight className="h-3.5 w-3.5 text-body-color/40 dark:text-body-color-dark/40" aria-hidden="true" />
+          <span className="font-medium text-primary">{pageName}</span>
+        </nav>
+
+        <h1 className="mb-3 max-w-[600px] text-heading-1 font-bold text-dark dark:text-white">
+          {pageName}
+        </h1>
+
+        {description && (
+          <p className="max-w-[500px] text-base leading-relaxed text-body-color dark:text-body-color-dark">
+            {description}
+          </p>
+        )}
+      </div>
+    </section>
   );
 };
 

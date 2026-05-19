@@ -11,7 +11,7 @@ const NewsLatterBox = () => {
         Subscribe to receive future updates
       </h3>
       <p className="mb-11 border-b border-body-color border-opacity-25 pb-11 text-base leading-relaxed text-body-color dark:border-white dark:border-opacity-25">
-      Stay updated with the latest property listings, market insights, and Shelteruim news. Subscribe to our newsletter and never miss an update!
+      Stay updated with the latest property listings, market insights, and Propellio AI news. Subscribe to our newsletter and never miss an update!
       </p>
       <div>
         <input
